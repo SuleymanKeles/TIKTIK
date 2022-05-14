@@ -10,6 +10,12 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("Producg Detail Screen"),
+          ),
+          body: const Center(child: Text("Product Detail Screen")),
+        ));
   }
 }

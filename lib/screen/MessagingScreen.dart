@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class MessagingScreen extends StatefulWidget {
@@ -10,6 +11,12 @@ class MessagingScreen extends StatefulWidget {
 class _MessagingScreenState extends State<MessagingScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+        child: Scaffold(
+      appBar: AppBar(
+        title: const Text("Messaging Screen"),
+      ),
+      body: const Center(child: Text("Messaging Screen ")),
+    ));
   }
 }

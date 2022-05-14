@@ -10,6 +10,12 @@ class KitchenAddScreen extends StatefulWidget {
 class _KitchenAddScreenState extends State<KitchenAddScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("Kitchen Screen"),
+          ),
+          body: const Center(child: Text("Kitchen Screen")),
+        ));
   }
 }

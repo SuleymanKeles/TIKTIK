@@ -10,6 +10,12 @@ class OrderConformationScreen extends StatefulWidget {
 class _OrderConformationScreenState extends State<OrderConformationScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("OrderConformationScreen Detail Screen"),
+          ),
+          body: const Center(child: Text("OrderConformationScreen Detail Screen")),
+        ));
   }
 }
