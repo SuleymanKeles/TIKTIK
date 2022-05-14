@@ -1,4 +1,0 @@
-io/flutter/plugins/GeneratedPluginRegistrant.java
- io.flutter.plugins.GeneratedPluginRegistrant
-com/yesas/tiktik/BuildConfig.java
- com.yesas.tiktik.BuildConfig
