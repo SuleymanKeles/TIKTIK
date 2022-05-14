@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         '/singUpScreen': (context) =>  SingUpScreen(),
         '/userProfileScreen': (context) =>  UserProfileScreen(),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
