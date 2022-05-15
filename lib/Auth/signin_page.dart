@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktik/demo.dart';
+import 'package:tiktik/screen/LoginScreen.dart';
 import 'register_page.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -366,7 +367,7 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
 
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => demo(),
+          builder: (context) => LoginScreen(),
         ),
       );
 
