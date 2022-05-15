@@ -52,8 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 }),
               ),
               Center(
-                child: MaterialButton(child: const Text("Go to singUpScreen Page"),color: Colors.blue,onPressed: () {
-                  Navigator.pushNamed(context, '/singUpScreen');
+                child: MaterialButton(child: const Text("Go to signIn Page"),color: Colors.blue,onPressed: () {
+                  Navigator.pushNamed(context, '/sign');
                 }),
               ),
               Center(

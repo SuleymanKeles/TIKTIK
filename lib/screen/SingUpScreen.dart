@@ -8,6 +8,7 @@ class SingUpScreen extends StatefulWidget {
 }
 
 class _SingUpScreenState extends State<SingUpScreen> {
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
