@@ -1,5 +1,3 @@
-
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
@@ -19,16 +17,13 @@ class SignInPage extends StatefulWidget {
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-
 class _SignInPageState extends State<SignInPage> {
   /// add style page this variable
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: _SignInBody(),
     );
   }
@@ -40,7 +35,7 @@ class _SignInBody extends StatefulWidget {
 }
 
 class __SignInBodyState extends State<_SignInBody> {
-  Color? fontColor= Colors.redAccent[400];
+  Color? fontColor = Colors.redAccent[400];
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +44,13 @@ class __SignInBodyState extends State<_SignInBody> {
         child: ListView(
           padding: const EdgeInsets.all(12.0),
           children: [
-
             Center(
-
               //TO:DO Logo eklenebilir
-                child: Padding(
-                padding: EdgeInsets.only(top:80.0),
+              child: Padding(
+                padding: EdgeInsets.only(top: 80.0),
                 child: Text(
                   "TIKTIK",
-                  style: TextStyle(
-                      color:fontColor,
-                      fontSize: 30
-                  ),
+                  style: TextStyle(color: fontColor, fontSize: 30),
                 ),
               ),
             ),
@@ -78,18 +68,16 @@ class __SignInBodyState extends State<_SignInBody> {
 
             divider(),
             goSignUpPage(),
-
           ],
         ),
       ),
     );
   }
 
-  Widget goSignUpPage(){
-    return   Center(
+  Widget goSignUpPage() {
+    return Center(
       child: InkWell(
-        onTap: (){
-
+        onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => RegisterPage(),
@@ -97,33 +85,26 @@ class __SignInBodyState extends State<_SignInBody> {
           );
         },
         child: Padding(
-          padding: const EdgeInsets.only(left:50.0,top:15),
+          padding: const EdgeInsets.only(left: 50.0, top: 15),
           child: Row(
             children: [
               //    SizedBox(width: 60,),
               Text(
                 "Don't have an account? ",
-                style: TextStyle(
-                    color:Colors.black54,
-                    fontSize: 20
-                ),
+                style: TextStyle(color: Colors.black54, fontSize: 20),
               ),
               Text(
-                "Sign up",style:
-              TextStyle(
-                  color:Colors.green,
-                  fontSize: 20
-              ),
+                "Sign up",
+                style: TextStyle(color: Colors.green, fontSize: 20),
               ),
             ],
           ),
         ),
       ),
-
     );
   }
-Row divider(){
 
+  Row divider() {
     return Row(children: <Widget>[
       Expanded(
         child: new Container(
@@ -143,7 +124,7 @@ Row divider(){
             )),
       ),
     ]);
-}
+  }
 
   void _signInWithGoogle() async {
     try {
@@ -152,11 +133,10 @@ Row divider(){
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
 
-      final AuthCredential googleAuthCredential =
-          GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken,
-          idToken: googleAuth?.idToken,
-        );
+      final AuthCredential googleAuthCredential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
 
       final UserCredential userCredential =
           await _auth.signInWithCredential(googleAuthCredential);
@@ -171,17 +151,15 @@ Row divider(){
         ),
       );
 
-
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider<ProviderUserData>(
-              create: (_) => ProviderUserData.user(user: _googleUser), child: demo()),
+              create: (_) => ProviderUserData.user(user: _googleUser),
+              child: demo()),
         ),
       );
-
     } on FirebaseAuthException catch (e) {
-
       debugPrint(e.toString());
 
       // TODO: Kayıt İşlemi
@@ -191,7 +169,6 @@ Row divider(){
         ),
       );
     } catch (e) {
-
       debugPrint(e.toString());
 
       // TODO: Kayıt İşlemi
@@ -202,8 +179,6 @@ Row divider(){
       );
     }
   }
-
-
 }
 
 class _EmailPasswordForm extends StatefulWidget {
@@ -270,7 +245,7 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
                       disabledBorder: InputBorder.none,
                       hintText: "Password",
                       hintStyle: TextStyle(color: Colors.grey)),
-                  validator: ( password) {
+                  validator: (password) {
                     if (password!.isEmpty) return "Please enter an password";
                     return null;
                   },
@@ -287,11 +262,9 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
                 onTap: () {
                   print("password reset pressed");
                   if (_emailController.text == null) {
-
                     // TODO: Kayıt İşlemi
                     Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                          "Please enter your current email !"),
+                      content: Text("Please enter your current email !"),
                     ));
                   } else {
                     resetPassword(_emailController.text.trim());
@@ -309,9 +282,9 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
               alignment: Alignment.center,
               child: SignInButton(Buttons.Email, text: "Log In",
                   onPressed: () async {
-                    print(_emailController.text);
-                    print(_passwordController.text);
-                  print("Sign in button pressed");
+                print(_emailController.text);
+                print(_passwordController.text);
+                print("Sign in button pressed");
                 if (_formKey.currentState!.validate()) {
                   print("validate");
                   _signInWithEmailAndPassword();
@@ -329,8 +302,6 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
-
-
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("Mail account user not found"),
       ));
@@ -341,7 +312,7 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
 
   /// [Email] ve [Password] ile kullanıcı girişi yapar.
   void _signInWithEmailAndPassword() async {
-    print(  "_signInWithEmailAndPassword");
+    print("_signInWithEmailAndPassword");
     try {
       final user = (await _auth.signInWithEmailAndPassword(
         email: _emailController.text.trimRight(),
@@ -354,8 +325,6 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
         duration: Duration(seconds: 2),
         content: Text("${user?.email} logged."),
       ));
-
-
 
       // Navigator.pushReplacement(
       //   context,
@@ -371,10 +340,8 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
         ),
       );
 
-
       _emailController.text = "";
       _passwordController.text = "";
-
     } on FirebaseAuthException catch (e) {
       print("Auth problem");
       debugPrint(e.toString());
