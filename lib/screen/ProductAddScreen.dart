@@ -40,7 +40,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   @override
   Widget build(BuildContext context) => Builder(
         builder: (context) => Scaffold(
-          appBar: AppBar(title: const Text("Edit Kitchen Profile")),
+          appBar: AppBar(title: const Text("Edit Product Profile")),
           body: ListView(
             padding: EdgeInsets.symmetric(horizontal: 32),
             physics: BouncingScrollPhysics(),
@@ -52,7 +52,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
               ),
               const SizedBox(height: 24),
               TextFieldWidget(
-                label: 'Kitchen Name',
+                label: 'Product Name',
                 text: product.Name,
                 onChanged: (name) {},
               ),
