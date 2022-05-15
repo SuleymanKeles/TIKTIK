@@ -47,10 +47,11 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen>
                   pinned: true,
                   floating: true,
                   forceElevated: innerBoxIsScrolled,
-                  bottom: TabBar(
+                  bottom: const TabBar(
                     tabs: <Tab>[
-                      Tab(text: 'Hazirda'),
-                      Tab(text: 'Hazirlat'),
+                      Tab(child: Text("Hazırda",style: TextStyle(color: Colors.black),)),
+                      Tab(child: Text("Hazırlat",style: TextStyle(color: Colors.black),)),
+
                     ],
                   ),
                   flexibleSpace: FlexibleSpaceBar(

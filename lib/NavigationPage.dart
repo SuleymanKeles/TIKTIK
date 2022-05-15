@@ -32,24 +32,39 @@ class _NavigationPageState extends State<NavigationPage> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Mesajlar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Ana Sayfa',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Profil',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
+      bottomNavigationBar: Container(
+        height: 80.0,
+        color: Colors.white,
+        child: BottomNavigationBar(
+            elevation: 0.0,
+            selectedItemColor: Colors.redAccent,
+            unselectedItemColor: Colors.black,
+            currentIndex: _selectedIndex,
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("assets/icons/envelope.png"),
+                    size: 24,
+                  ),
+                  label: 'Mesajlar'),
+              BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("assets/icons/home.png"),
+                    size: 24,
+                  ),
+                  label: 'Ana Sayfa'),
+              BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("assets/icons/user.png"),
+                    size: 24,
+                  ),
+                  label: 'Profil'),
+            ]),
       ),
     );
   }
