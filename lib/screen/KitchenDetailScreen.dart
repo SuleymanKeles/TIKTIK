@@ -98,6 +98,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen>
                       Price: "Price",
                       Category: "Category",
                       Description: "Description",
+                      ServiceType: "Gel-Al",
                       Label: "Label",
                       Photo:
                           "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
@@ -116,6 +117,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen>
                       Price: "Price",
                       Category: "Category",
                       Description: "Description",
+                      ServiceType: "Gel-Al",
                       Label: "Label",
                       Photo:
                           "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",

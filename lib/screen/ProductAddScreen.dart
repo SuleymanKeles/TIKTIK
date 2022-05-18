@@ -17,10 +17,11 @@ class ProductAddScreen extends StatefulWidget {
 class _ProductAddScreenState extends State<ProductAddScreen> {
   Product product = Product(
     ProductID: "ProductID",
-    Name: "Name",
-    Price: "Price",
-    Category: "Category",
-    Description: "Description",
+    Name: "Mercimek Köftesi",
+    Price: "30.0",
+    Category: "Atıştırmalık",
+    Description: "Bir porsiyonda 10 tane bulunmaktadır.",
+    ServiceType: "Gel-Al",
     Label: "Label",
     Photo:
         "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
@@ -39,47 +40,70 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
   @override
   Widget build(BuildContext context) => Builder(
-        builder: (context) => Scaffold(
-          appBar: AppBar(title: const Text("Edit Product Profile")),
-          body: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 32),
-            physics: BouncingScrollPhysics(),
-            children: [
-              ProfileWidget(
-                imagePath: product.Photo,
-                isEdit: true,
-                onClicked: () async {},
-              ),
-              const SizedBox(height: 24),
-              TextFieldWidget(
-                label: 'Product Name',
-                text: product.Name,
-                onChanged: (name) {},
-              ),
-              const SizedBox(height: 24),
-              TextFieldWidget(
-                label: 'Biyografi',
-                text: product.Description,
-                onChanged: (email) {},
-              ),
-              const SizedBox(height: 24),
-              TextFieldWidget(
-                label: 'ürünler',
-                text: product.Description,
-                maxLines: 5,
-                onChanged: (about) {},
-              ),
-              const SizedBox(height: 24),
-              MaterialButton(
-                onPressed: () {},
-                child: const Text(
-                  "Ürün Ekle",
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: MyThemes.primaryColor,
-              )
-            ],
-          ),
+    builder: (context) => Scaffold(
+      appBar: AppBar(title: const Text("Edit Product ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400),),
+        elevation: 0.0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25.0,vertical: 10.0),
+        child: SafeArea(
+            child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ProfileWidget(
+                      imagePath: "assets/images/mercimekköftesi.png",
+                      isEdit: true,
+                      onClicked: () async {},
+                    ),
+                    const SizedBox(height: 20),
+                    TextFieldWidget(
+                      label: 'ÜRÜN ADI',
+                      text: product.Name,
+                      onChanged: (name) {},
+                    ),
+                    const SizedBox(height: 20),
+                    TextFieldWidget(
+                      label: 'KATEGORİ',
+                      text: product.Category,
+                      onChanged: (email) {},
+                    ),
+                    const SizedBox(height: 20),
+                    TextFieldWidget(
+                      label: 'AÇIKLAMA',
+                      text: product.Description,
+                      maxLines: 3,
+                      onChanged: (about) {},
+                    ),
+                    const SizedBox(height: 20),
+                    TextFieldWidget(
+                      label: 'SERVİS TİPİ',
+                      text: product.ServiceType,
+                      onChanged: (about) {},
+                    ),
+                    const SizedBox(height: 20),
+                    TextFieldWidget(
+                      label: 'ÜCRET',
+                      text: product.Price,
+                      onChanged: (about) {},
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.redAccent[400],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 145.0, vertical: 15.0)),
+                        child: const Text(
+                          "KAYDET",
+                          style: TextStyle(fontSize: 18.0, color: Colors.white),
+                        ))
+                  ],
+                )
+            )
         ),
-      );
+      ),
+    ),
+  );
 }

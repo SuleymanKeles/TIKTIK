@@ -19,6 +19,7 @@ class _OrderConformationScreenState extends State<OrderConformationScreen> {
     Category: "Category",
     Description: "Description",
     Label: "Label",
+    ServiceType: "Gel-Al",
     Photo:
         "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
   );

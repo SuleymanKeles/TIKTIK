@@ -16,15 +16,15 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.primary;
+    const color = Color(0xFFFF1744);
 
     return Center(
       child: Stack(
         children: [
           buildImage(),
           Positioned(
-            bottom: 0,
-            right: 4,
+            bottom:-4,
+            right: -4,
             child: buildEditIcon(color),
           ),
         ],
@@ -33,16 +33,18 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final image = NetworkImage(imagePath);
+    final image = AssetImage(imagePath);
 
-    return ClipOval(
+    return ClipRRect(
+      borderRadius:
+      BorderRadius.circular(12.0),
       child: Material(
         color: Colors.transparent,
         child: Ink.image(
           image: image,
-          fit: BoxFit.cover,
-          width: 128,
-          height: 128,
+          fit: BoxFit.fill,
+          width: 350.0,
+          height: 160.0,
           child: InkWell(onTap: onClicked),
         ),
       ),
@@ -55,10 +57,10 @@ class ProfileWidget extends StatelessWidget {
         child: buildCircle(
           color: color,
           all: 8,
-          child: Icon(
-            isEdit ? Icons.add_a_photo : Icons.edit,
+          child: const Icon(
+            Icons.edit,
             color: Colors.white,
-            size: 20,
+            size: 24,
           ),
         ),
       );

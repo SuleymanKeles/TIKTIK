@@ -39,17 +39,27 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.label,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Text(
+              widget.label,
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            ),
           ),
           const SizedBox(height: 8),
           TextField(
             controller: controller,
             decoration: InputDecoration(
+              fillColor:const Color(0xFFEEEEEE),
+              filled: true,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(
+                  width: 0,
+                  style: BorderStyle.none,
+                ),
               ),
+              focusedBorder: InputBorder.none,
             ),
             maxLines: widget.maxLines,
           ),
