@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:tiktik/data/modal/Kitchen.dart';
-import 'package:tiktik/data/modal/Product.dart';
 import 'package:tiktik/style/Theme.dart';
 
 import '../data/modal/User.dart';
 import '../widget/profile_widget.dart';
 import '../widget/textfield_widget.dart';
 
-class ProductAddScreen extends StatefulWidget {
-  const ProductAddScreen({Key? key}) : super(key: key);
+class KitchenEditScreen extends StatefulWidget {
+  const KitchenEditScreen({Key? key}) : super(key: key);
 
   @override
-  _ProductAddScreenState createState() => _ProductAddScreenState();
+  _KitchenEditScreenState createState() => _KitchenEditScreenState();
 }
 
-class _ProductAddScreenState extends State<ProductAddScreen> {
-  Product product = Product(
-    ProductID: "ProductID",
-    Name: "Mercimek Köftesi",
-    Price: "30.0",
-    Category: "Atıştırmalık",
-    Description: "Bir porsiyonda 10 tane bulunmaktadır.",
-    ServiceType: "Gel-Al",
-    Label: "Label",
-    Photo:
-        "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
+class _KitchenEditScreenState extends State<KitchenEditScreen> {
+  Kitchen kitchen = Kitchen(
+    KitchenID: "KitchenID",
+    UserID: "UserID",
+    KitchenName: "Ayşe'nin Mutfağı",
+    Point: "Point",
+    ProductList: "Zeytinyağlı Yaprak Sarma",
+    CoverPhoto:
+    "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
   );
   User user = const User(
       userID: "userID",
@@ -33,15 +30,15 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
       firstName: "firstName",
       lastName: "lastName",
       birthDate: "birthDate",
-      biography: "biography",
+      biography: "Özenle yapılan el emeği ürünleri... Siparişlerinizi bekliyorum.",
       photo:
-          "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
+      "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
       address: "address");
 
   @override
   Widget build(BuildContext context) => Builder(
     builder: (context) => Scaffold(
-      appBar: AppBar(title: const Text("Ürün Ekle ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400),),
+      appBar: AppBar(title: const Text("Mutfağı Düzenle",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400),),
         elevation: 0.0,
       ),
       body: Padding(
@@ -51,39 +48,27 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 child: Column(
                   children: [
                     ProfileWidget(
-                      imagePath: "assets/images/mercimekköftesi.png",
+                      imagePath: "assets/images/mutfak.png",
                       isEdit: true,
                       onClicked: () async {},
                     ),
                     const SizedBox(height: 20),
                     TextFieldWidget(
-                      label: 'ÜRÜN ADI',
-                      text: "",
+                      label: 'MUTFAK ADI',
+                      text: kitchen.KitchenName,
                       onChanged: (name) {},
                     ),
                     const SizedBox(height: 20),
                     TextFieldWidget(
-                      label: 'KATEGORİ',
-                      text: "",
+                      label: 'HAKKINDA',
+                      text: user.biography,
                       onChanged: (email) {},
                     ),
                     const SizedBox(height: 20),
                     TextFieldWidget(
-                      label: 'AÇIKLAMA',
-                      text: "",
+                      label: 'YEMEKLER',
+                      text: kitchen.ProductList,
                       maxLines: 3,
-                      onChanged: (about) {},
-                    ),
-                    const SizedBox(height: 20),
-                    TextFieldWidget(
-                      label: 'SERVİS TİPİ',
-                      text: "",
-                      onChanged: (about) {},
-                    ),
-                    const SizedBox(height: 20),
-                    TextFieldWidget(
-                      label: 'ÜCRET',
-                      text: "",
                       onChanged: (about) {},
                     ),
                     const SizedBox(height: 24),
@@ -96,7 +81,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 145.0, vertical: 15.0)),
                         child: const Text(
-                          "ÜRÜN EKLE",
+                          "KAYDET",
                           style: TextStyle(fontSize: 18.0, color: Colors.white),
                         ))
                   ],

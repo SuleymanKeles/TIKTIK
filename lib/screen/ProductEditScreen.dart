@@ -7,14 +7,14 @@ import '../data/modal/User.dart';
 import '../widget/profile_widget.dart';
 import '../widget/textfield_widget.dart';
 
-class ProductAddScreen extends StatefulWidget {
-  const ProductAddScreen({Key? key}) : super(key: key);
+class ProductEditScreen extends StatefulWidget {
+  const ProductEditScreen({Key? key}) : super(key: key);
 
   @override
-  _ProductAddScreenState createState() => _ProductAddScreenState();
+  _ProductEditScreenState createState() => _ProductEditScreenState();
 }
 
-class _ProductAddScreenState extends State<ProductAddScreen> {
+class _ProductEditScreenState extends State<ProductEditScreen> {
   Product product = Product(
     ProductID: "ProductID",
     Name: "Mercimek Köftesi",
@@ -24,7 +24,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
     ServiceType: "Gel-Al",
     Label: "Label",
     Photo:
-        "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
+    "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
   );
   User user = const User(
       userID: "userID",
@@ -35,13 +35,13 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
       birthDate: "birthDate",
       biography: "biography",
       photo:
-          "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
+      "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
       address: "address");
 
   @override
   Widget build(BuildContext context) => Builder(
     builder: (context) => Scaffold(
-      appBar: AppBar(title: const Text("Ürün Ekle ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400),),
+      appBar: AppBar(title: const Text("Ürünü Düzenle ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400),),
         elevation: 0.0,
       ),
       body: Padding(
@@ -58,32 +58,32 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     const SizedBox(height: 20),
                     TextFieldWidget(
                       label: 'ÜRÜN ADI',
-                      text: "",
+                      text: product.Name,
                       onChanged: (name) {},
                     ),
                     const SizedBox(height: 20),
                     TextFieldWidget(
                       label: 'KATEGORİ',
-                      text: "",
+                      text: product.Category,
                       onChanged: (email) {},
                     ),
                     const SizedBox(height: 20),
                     TextFieldWidget(
                       label: 'AÇIKLAMA',
-                      text: "",
+                      text: product.Description,
                       maxLines: 3,
                       onChanged: (about) {},
                     ),
                     const SizedBox(height: 20),
                     TextFieldWidget(
                       label: 'SERVİS TİPİ',
-                      text: "",
+                      text: product.ServiceType,
                       onChanged: (about) {},
                     ),
                     const SizedBox(height: 20),
                     TextFieldWidget(
                       label: 'ÜCRET',
-                      text: "",
+                      text: product.Price,
                       onChanged: (about) {},
                     ),
                     const SizedBox(height: 24),
@@ -96,7 +96,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 145.0, vertical: 15.0)),
                         child: const Text(
-                          "ÜRÜN EKLE",
+                          "KAYDET",
                           style: TextStyle(fontSize: 18.0, color: Colors.white),
                         ))
                   ],

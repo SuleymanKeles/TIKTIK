@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tiktik/data/modal/Kitchen.dart';
-import 'package:tiktik/style/Theme.dart';
 
 import '../data/modal/User.dart';
 import '../widget/profile_widget.dart';
@@ -38,7 +37,7 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
   @override
   Widget build(BuildContext context) => Builder(
     builder: (context) => Scaffold(
-      appBar: AppBar(title: const Text("Edit Kitchen Profile",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400),),
+      appBar: AppBar(title: const Text("Mutfak Ekle",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400),),
         elevation: 0.0,
       ),
       body: Padding(
@@ -55,19 +54,19 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
             const SizedBox(height: 20),
             TextFieldWidget(
               label: 'MUTFAK ADI',
-              text: kitchen.KitchenName,
+              text: "",
               onChanged: (name) {},
             ),
             const SizedBox(height: 20),
             TextFieldWidget(
               label: 'HAKKINDA',
-              text: user.biography,
+              text: "",
               onChanged: (email) {},
             ),
             const SizedBox(height: 20),
             TextFieldWidget(
               label: 'YEMEKLER',
-              text: kitchen.ProductList,
+              text: "",
               maxLines: 3,
               onChanged: (about) {},
             ),
@@ -81,7 +80,7 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 145.0, vertical: 15.0)),
                 child: const Text(
-                  "KAYDET",
+                  "MUTFAK EKLE",
                   style: TextStyle(fontSize: 18.0, color: Colors.white),
                 ))
           ],
