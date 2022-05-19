@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({Key? key}) : super(key: key);
 
@@ -13,7 +15,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Producg Detail Screen"),
+            title:  Text(selectedName),
           ),
           body: const Center(child: Text("Product Detail Screen")),
         ));

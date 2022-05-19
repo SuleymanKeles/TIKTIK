@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import '../main.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -249,104 +252,149 @@ drawer: NavigationDrawer(),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1,
-                              crossAxisSpacing: 0.0,
-                              mainAxisSpacing: 10.0,
+
+
+                      SizedBox(
+                        height: MediaQuery.of(context).size.width,
+                        child: ListView(
+                          scrollDirection: Axis.vertical,
+                          children: <Widget>[
+                            Container(
                             ),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: HazirdaList.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    height: 200.0,
-                                    width: 350.0,
-                                    //padding: EdgeInsets.only(bottom: 24.0),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                child: Image.asset(
-                                                  HazirdaList[index]["image"],
-                                                  //'assets/images/sarma.png',
-                                                  width: 350.0,
-                                                  height: 140.0,
-                                                  fit: BoxFit.fill,
+                            StreamBuilder<QuerySnapshot>(
+                              stream:FirebaseFirestore.instance.collection('products').where(
+                                  'type', arrayContainsAny: [
+                                "hazirda"
+                              ]).snapshots(),
+                              builder: (
+                                  BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot,
+                                  ) {
+                                if (snapshot.hasError) {
+                                  return const Text("error");
+                                }
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const Text("loading");
+                                }
+                                final data = snapshot.requireData;
+                                return ListView.builder(
+                                  primary: false,
+                                  itemCount: data.size,
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        selectedName =
+                                        "${data.docs[index]['name']}";
+
+                                        selectedDescription =
+                                        "${data.docs[index]['description']}";
+
+                                       Navigator.pushNamed(context, '/productDetailScreen');
+                                      },
+                                      child: Column(
+                                    children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.width*0.5,
+                                      width: MediaQuery.of(context).size.width,
+
+                                      //padding: EdgeInsets.only(bottom: 24.0),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                                  child: Image.network(
+                                                    '${data.docs[index]['image']}',
+                                                    //'assets/images/sarma.png',
+                                                    height: MediaQuery.of(context).size.width*0.3,
+                                                    width: MediaQuery.of(context).size.width*0.87,
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
-                                              ),
-                                            ]),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Row(children: [
-                                          Text(
-                                            HazirdaList[index]["name"],
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300,
-                                                color: Colors.black),
-                                          )
-                                        ]),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const ImageIcon(
-                                              AssetImage(
-                                                  "assets/icons/star.png"),
-                                              size: 18,
-                                              color: Color(0xFFFF1744),
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
+                                              ]),
+                                          const SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(children: [
                                             Text(
-                                              HazirdaList[index]["score"],
+                                              '${data.docs[index]['name']}',
                                               style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black),
-                                            ),
-                                            const SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            const ImageIcon(
-                                              AssetImage(
-                                                  "assets/icons/truck.png"),
-                                              size: 18,
-                                              color: Color(0xFFFF1744),
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            const Text(
-                                              "Gel Al",
-                                              style: TextStyle(
-                                                  fontSize: 12,
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.w300,
                                                   color: Colors.black),
                                             )
-                                          ],
-                                        )
-                                      ],
+                                          ]),
+                                          const SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const ImageIcon(
+                                                AssetImage(
+                                                    "assets/icons/star.png"),
+                                                size: 18,
+                                                color: Color(0xFFFF1744),
+                                              ),
+                                              const SizedBox(
+                                                width: 5.0,
+                                              ),
+                                              Text(
+                                                '${data.docs[index]['score']}',
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black),
+                                              ),
+                                              const SizedBox(
+                                                width: 20.0,
+                                              ),
+                                              const ImageIcon(
+                                                AssetImage(
+                                                    "assets/icons/truck.png"),
+                                                size: 18,
+                                                color: Color(0xFFFF1744),
+                                              ),
+                                              const SizedBox(
+                                                width: 5.0,
+                                              ),
+                                              const Text(
+                                                "Gel Al",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: Colors.black),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            })
+                                    ],
+                                    )
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                right: MediaQuery.of(context).size.width * 0.07,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+
                       ])
 
                     //HAZIRLAT
@@ -363,122 +411,140 @@ drawer: NavigationDrawer(),
                         const SizedBox(
                           height: 20.0,
                         ),
-                        GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1,
-                              crossAxisSpacing: 0.0,
-                              mainAxisSpacing: 10.0,
-                            ),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: HazirlatList.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    height: 200.0,
-                                    width: 350.0,
-                                    //padding: EdgeInsets.only(bottom: 24.0),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                    ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.width,
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      children: <Widget>[
+                        Container(
+                        ),
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('products').where('type', arrayContainsAny: [
+                            "hazirlat"
+                          ])
+                              .snapshots(),
+                          builder: (
+                              BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot,
+                              ) {
+                            if (snapshot.hasError) {
+                              return const Text("error");
+                            }
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Text("loading");
+                            }
+                            final data = snapshot.requireData;
+                            return ListView.builder(
+                              primary: false,
+                              itemCount: data.size,
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                    onTap: () {
+                                      // Navigator.pushNamed(context, '/details');
+                                    },
                                     child: Column(
                                       children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                        Container(
+                                          height: MediaQuery.of(context).size.width*0.5,
+                                          width: MediaQuery.of(context).size.width,
+
+                                          //padding: EdgeInsets.only(bottom: 24.0),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                          ),
+                                          child: Column(
                                             children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                child: Image.asset(
-                                                  HazirdaList[index]["image"],
-                                                  width: 350.0,
-                                                  height: 140.0,
-                                                  fit: BoxFit.fill,
-                                                ),
+                                              Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                                  children: [
+                                                    ClipRRect(
+                                                      borderRadius:
+                                                      BorderRadius.circular(8.0),
+                                                      child: Image.network(
+                                                        '${data.docs[index]['image']}',
+                                                        //'assets/images/sarma.png',
+                                                        height: MediaQuery.of(context).size.width*0.3,
+                                                        width: MediaQuery.of(context).size.width*0.87,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ]),
+                                              const SizedBox(
+                                                height: 10.0,
                                               ),
-                                            ]),
-                                        const SizedBox(
-                                          height: 10.0,
+                                              Row(children: [
+                                                Text(
+                                                  '${data.docs[index]['name']}',
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w300,
+                                                      color: Colors.black),
+                                                )
+                                              ]),
+                                              const SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  const ImageIcon(
+                                                    AssetImage(
+                                                        "assets/icons/star.png"),
+                                                    size: 18,
+                                                    color: Color(0xFFFF1744),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 5.0,
+                                                  ),
+                                                  Text(
+                                                    '${data.docs[index]['score']}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.black),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 20.0,
+                                                  ),
+                                                  const ImageIcon(
+                                                    AssetImage(
+                                                        "assets/icons/truck.png"),
+                                                    size: 18,
+                                                    color: Color(0xFFFF1744),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 5.0,
+                                                  ),
+                                                  const Text(
+                                                    "Gel Al",
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w300,
+                                                        color: Colors.black),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                        Row(children: [
-                                          Text(
-                                            HazirdaList[index]["name"],
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300,
-                                                color: Colors.black),
-                                          )
-                                        ]),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const ImageIcon(
-                                              AssetImage(
-                                                  "assets/icons/star.png"),
-                                              size: 18,
-                                              color: Color(0xFFFF1744),
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            Text(
-                                              HazirdaList[index]["score"],
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black),
-                                            ),
-                                            const SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            const ImageIcon(
-                                              AssetImage(
-                                                  "assets/icons/truck.png"),
-                                              size: 18,
-                                              color: Color(0xFFFF1744),
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            const Text(
-                                              "Gel Al",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300,
-                                                  color: Colors.black),
-                                            ),
-                                            const SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            const ImageIcon(
-                                              AssetImage(
-                                                  "assets/icons/chef.png"),
-                                              size: 18,
-                                              color: Color(0xFFFF1744),
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            Text(
-                                              HazirlatList[index]["cooked_by"],
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300,
-                                                  color: Colors.black),
-                                            )
-                                          ],
-                                        )
                                       ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            })
+                                    )
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            right: MediaQuery.of(context).size.width * 0.07,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                       ])
               ],
             ),

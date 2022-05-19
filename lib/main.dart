@@ -22,6 +22,9 @@ void main() async{
   runApp(const MyApp());
 }
 
+String selectedName = "";
+String selectedDescription = "";
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
