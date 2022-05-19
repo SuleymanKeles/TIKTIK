@@ -1,3 +1,5 @@
+
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
@@ -6,7 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktik/demo.dart';
-import 'package:tiktik/screen/LoginScreen.dart';
+import 'package:tiktik/screen/UserProfileScreen.dart';
+import '../StyleProvider.dart';
 import 'register_page.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -17,13 +20,16 @@ class SignInPage extends StatefulWidget {
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
+
 class _SignInPageState extends State<SignInPage> {
   /// add style page this variable
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+
       body: _SignInBody(),
     );
   }
@@ -35,7 +41,7 @@ class _SignInBody extends StatefulWidget {
 }
 
 class __SignInBodyState extends State<_SignInBody> {
-  Color? fontColor = Colors.redAccent[400];
+  Color? fontColor= Colors.redAccent[400];
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +50,18 @@ class __SignInBodyState extends State<_SignInBody> {
         child: ListView(
           padding: const EdgeInsets.all(12.0),
           children: [
+
             Center(
+
               //TO:DO Logo eklenebilir
-              child: Padding(
-                padding: EdgeInsets.only(top: 80.0),
+                child: Padding(
+                padding: EdgeInsets.only(top:80.0),
                 child: Text(
                   "TIKTIK",
-                  style: TextStyle(color: fontColor, fontSize: 30),
+                  style: TextStyle(
+                      color:fontColor,
+                      fontSize: 30
+                  ),
                 ),
               ),
             ),
@@ -61,23 +72,25 @@ class __SignInBodyState extends State<_SignInBody> {
             ///TODO Google ile giriş
 
             _SignInProvider(
-              infoText: "Log In with Google ",
+              infoText: "Google ile giriş yap",
               buttonType: Buttons.Google,
               signInMethod: () async => _signInWithGoogle(),
             ),
 
             divider(),
             goSignUpPage(),
+
           ],
         ),
       ),
     );
   }
 
-  Widget goSignUpPage() {
-    return Center(
+  Widget goSignUpPage(){
+    return   Center(
       child: InkWell(
-        onTap: () {
+        onTap: (){
+
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => RegisterPage(),
@@ -85,26 +98,33 @@ class __SignInBodyState extends State<_SignInBody> {
           );
         },
         child: Padding(
-          padding: const EdgeInsets.only(left: 50.0, top: 15),
+          padding: const EdgeInsets.only(left:50.0,top:15),
           child: Row(
             children: [
               //    SizedBox(width: 60,),
               Text(
-                "Don't have an account? ",
-                style: TextStyle(color: Colors.black54, fontSize: 20),
+                "Hesabın yok mu ? ",
+                style: TextStyle(
+                    color:Colors.black54,
+                    fontSize: 20
+                ),
               ),
               Text(
-                "Sign up",
-                style: TextStyle(color: Colors.green, fontSize: 20),
+                "Kayıt ol",style:
+              TextStyle(
+                  color:mainColor,
+                  fontSize: 20
+              ),
               ),
             ],
           ),
         ),
       ),
+
     );
   }
+Row divider(){
 
-  Row divider() {
     return Row(children: <Widget>[
       Expanded(
         child: new Container(
@@ -124,7 +144,7 @@ class __SignInBodyState extends State<_SignInBody> {
             )),
       ),
     ]);
-  }
+}
 
   void _signInWithGoogle() async {
     try {
@@ -133,10 +153,11 @@ class __SignInBodyState extends State<_SignInBody> {
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
 
-      final AuthCredential googleAuthCredential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
+      final AuthCredential googleAuthCredential =
+          GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
 
       final UserCredential userCredential =
           await _auth.signInWithCredential(googleAuthCredential);
@@ -147,19 +168,21 @@ class __SignInBodyState extends State<_SignInBody> {
       // TODO: Kayıt İşlemi
       Scaffold.of(context).showSnackBar(
         SnackBar(
-          content: Text("${googleUser!.displayName}, logged in with Google ."),
+          content: Text("${googleUser!.displayName},Google ile giriş yapıldı."),
         ),
       );
+
 
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider<ProviderUserData>(
-              create: (_) => ProviderUserData.user(user: _googleUser),
-              child: demo()),
+              create: (_) => ProviderUserData.user(user: _googleUser), child: UserProfileScreen()),
         ),
       );
+
     } on FirebaseAuthException catch (e) {
+
       debugPrint(e.toString());
 
       // TODO: Kayıt İşlemi
@@ -169,6 +192,7 @@ class __SignInBodyState extends State<_SignInBody> {
         ),
       );
     } catch (e) {
+
       debugPrint(e.toString());
 
       // TODO: Kayıt İşlemi
@@ -179,6 +203,8 @@ class __SignInBodyState extends State<_SignInBody> {
       );
     }
   }
+
+
 }
 
 class _EmailPasswordForm extends StatefulWidget {
@@ -215,10 +241,10 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
                       enabledBorder: InputBorder.none,
                       errorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
-                      hintText: "E-Mail",
+                      hintText: "Email",
                       hintStyle: TextStyle(color: Colors.grey)),
                   validator: (mail) {
-                    if (mail!.isEmpty) return "Please enter an email";
+                    if (mail!.isEmpty) return "Lütfen email hesabınızı giriniz";
                     return null;
                   },
                 ),
@@ -245,8 +271,8 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
                       disabledBorder: InputBorder.none,
                       hintText: "Password",
                       hintStyle: TextStyle(color: Colors.grey)),
-                  validator: (password) {
-                    if (password!.isEmpty) return "Please enter an password";
+                  validator: ( password) {
+                    if (password!.isEmpty) return "Lütfen şifrenizi giriniz";
                     return null;
                   },
                   obscureText: true, //! Şifrenin görünmesini engeller.
@@ -256,37 +282,42 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
             SizedBox(height: 10),
             InkWell(
                 child: Text(
-                  " Forgotten password?",
-                  style: TextStyle(fontSize: 15, color: Colors.green),
+                  " Şifremi Unuttum",
+                  style: TextStyle(fontSize: 15, color:mainColor),
                 ),
                 onTap: () {
                   print("password reset pressed");
                   if (_emailController.text == null) {
-                    // TODO: Kayıt İşlemi
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text("Please enter your current email !"),
-                    ));
-                  } else {
-                    resetPassword(_emailController.text.trim());
 
                     // TODO: Kayıt İşlemi
                     Scaffold.of(context).showSnackBar(SnackBar(
-                      content:
-                          Text("Password renewal email sent to your account "),
+                      content: Text(
+                          "Lütfen geçerli email hesabınızı giriniz !"),
                     ));
+                  } else {
+
+
+                    // TODO: Kayıt İşlemi
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: (_emailController.text.isEmpty) ?
+                      Text("Lütfen geçerli bir email hesabı giriniz !")   :
+                      Text("Hesabınıza şifre yenileme e-postası gönderildi.") ,
+
+                    ));
+                    resetPassword(_emailController.text.trim());
                   }
                 }),
 
             Container(
               padding: const EdgeInsets.only(top: 16.0),
               alignment: Alignment.center,
-              child: SignInButton(Buttons.Email, text: "Log In",
+              child: SignInButton(Buttons.Email, text: "Giriş yap",
                   onPressed: () async {
-                print(_emailController.text);
-                print(_passwordController.text);
-                print("Sign in button pressed");
+                  //   print(_emailController.text);
+                  //   print(_passwordController.text);
+                  // print("Sign in button pressed");
                 if (_formKey.currentState!.validate()) {
-                  print("validate");
+                // print("validate");
                   _signInWithEmailAndPassword();
                 }
               }),
@@ -302,17 +333,19 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
+
+
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("Mail account user not found"),
       ));
 
-      debugPrint("Error refreshing password ! ");
+      debugPrint("Şifre yenilerken hata oluştu ! ");
     }
   }
 
   /// [Email] ve [Password] ile kullanıcı girişi yapar.
   void _signInWithEmailAndPassword() async {
-    print("_signInWithEmailAndPassword");
+    //print(  "_signInWithEmailAndPassword");
     try {
       final user = (await _auth.signInWithEmailAndPassword(
         email: _emailController.text.trimRight(),
@@ -323,8 +356,10 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
       // TODO: Kayıt İşlemi
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: Duration(seconds: 2),
-        content: Text("${user?.email} logged."),
+        content: Text("${user?.email} giriş yaptı."),
       ));
+
+
 
       // Navigator.pushReplacement(
       //   context,
@@ -333,15 +368,17 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
       //         create: (_) => ProviderUserData.user(user: user)),
       //   ),
       // );
-
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => LoginScreen(),
+          builder: (context) => UserProfileScreen(),
         ),
       );
 
+
+
       _emailController.text = "";
       _passwordController.text = "";
+
     } on FirebaseAuthException catch (e) {
       print("Auth problem");
       debugPrint(e.toString());
@@ -354,7 +391,7 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
 
       // TODO: Kayıt İşlemi
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("There was a problem logging in with Email & Password"),
+        content: Text("Bu email ve şifre ile giriş yapılırken hata oluştu"),
       ));
     }
   }
