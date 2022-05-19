@@ -47,10 +47,11 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen>
                   pinned: true,
                   floating: true,
                   forceElevated: innerBoxIsScrolled,
-                  bottom: TabBar(
+                  bottom: const TabBar(
                     tabs: <Tab>[
-                      Tab(text: 'Hazirda'),
-                      Tab(text: 'Hazirlat'),
+                      Tab(child: Text("Hazırda",style: TextStyle(color: Colors.black),)),
+                      Tab(child: Text("Hazırlat",style: TextStyle(color: Colors.black),)),
+
                     ],
                   ),
                   flexibleSpace: FlexibleSpaceBar(
@@ -97,6 +98,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen>
                       Price: "Price",
                       Category: "Category",
                       Description: "Description",
+                      ServiceType: "Gel-Al",
                       Label: "Label",
                       Photo:
                           "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
@@ -115,6 +117,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen>
                       Price: "Price",
                       Category: "Category",
                       Description: "Description",
+                      ServiceType: "Gel-Al",
                       Label: "Label",
                       Photo:
                           "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",

@@ -20,12 +20,14 @@ class _MessagingBoxScreenState extends State<MessagingBoxScreen> {
         child: Scaffold(
           appBar: AppBar(
             bottom: const TabBar(
+
               tabs: [
-                Tab(child: Text("Devam Eden")),
-                Tab(child: Text("Geçmiş")),
+                Tab(child: Text("Devam Eden",style: TextStyle(color: Colors.black),)),
+                Tab(child: Text("Geçmiş",style: TextStyle(color: Colors.black),)),
               ],
             ),
             title: const Text('Mesaj kutusu'),
+
           ),
           body: TabBarView(
             children: [

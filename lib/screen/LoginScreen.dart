@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -9,61 +8,90 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text("Messaging Screen"),
-          ),
-          body: Column(
-
-            children: [
-              Center(
-                child: MaterialButton(child: Text("Go to Navigation Page"),color: Colors.blue,onPressed: () {
+      appBar: AppBar(
+        title: const Text("Messaging Screen"),
+      ),
+      body: Column(
+        children: [
+          Center(
+            child: MaterialButton(
+                child: Text("Go to Navigation Page"),
+                color: Colors.blue,
+                onPressed: () {
                   Navigator.pushNamed(context, '/navigationPage');
                 }),
-              ),
-              Center(
-                child: MaterialButton(child: const Text("Go to kitchenAddScreen Page"),color: Colors.blue,onPressed: () {
+          ),
+          Center(
+            child: MaterialButton(
+                child: const Text("Go to kitchenAddScreen Page"),
+                color: Colors.blue,
+                onPressed: () {
                   Navigator.pushNamed(context, '/kitchenAddScreen');
                 }),
-              ),
-              Center(
-                child: MaterialButton(child: const Text("Go to kitchenDetailScreen Page"),color: Colors.blue,onPressed: () {
+          ),
+          Center(
+            child: MaterialButton(
+                child: const Text("Go to kitchenDetailScreen Page"),
+                color: Colors.blue,
+                onPressed: () {
                   Navigator.pushNamed(context, '/kitchenDetailScreen');
                 }),
-              ),
-              Center(
-                child: MaterialButton(child: const Text("Go to messagingScreen Page"),color: Colors.blue,onPressed: () {
+          ),
+          Center(
+            child: MaterialButton(
+                child: const Text("Go to messagingScreen Page"),
+                color: Colors.blue,
+                onPressed: () {
                   Navigator.pushNamed(context, '/messagingScreen');
                 }),
-              ),
-              Center(
-                child: MaterialButton(child: const Text("Go to orderConformationScreen Page"),color: Colors.blue,onPressed: () {
+          ),
+          Center(
+            child: MaterialButton(
+                child: const Text("Go to orderConformationScreen Page"),
+                color: Colors.blue,
+                onPressed: () {
                   Navigator.pushNamed(context, '/orderConformationScreen');
                 }),
-              ),
-              Center(
-                child: MaterialButton(child: const Text("Go to productDetailScreen Page"),color: Colors.blue,onPressed: () {
+          ),
+          Center(
+            child: MaterialButton(
+                child: const Text("Go to productDetailScreen Page"),
+                color: Colors.blue,
+                onPressed: () {
                   Navigator.pushNamed(context, '/productDetailScreen');
                 }),
-              ),
-              Center(
-                child: MaterialButton(child: const Text("Go to signIn Page"),color: Colors.blue,onPressed: () {
+          ),
+          Center(
+            child: MaterialButton(
+                child: const Text("Go to signIn Page"),
+                color: Colors.blue,
+                onPressed: () {
                   Navigator.pushNamed(context, '/sign');
                 }),
-              ),
-              Center(
-                child: MaterialButton(child: const Text("Go to userProfileScreen Page"),color: Colors.blue,onPressed: () {
+          ),
+          Center(
+            child: MaterialButton(
+                child: const Text("Go to userProfileScreen Page"),
+                color: Colors.blue,
+                onPressed: () {
                   Navigator.pushNamed(context, '/userProfileScreen');
                 }),
-              ),
-              const Center(child: Text("Messaging Screen")),
-            ],
           ),
-        ));
+          Center(
+            child: MaterialButton(
+                child: const Text("Go to productAddScreen Page"),
+                color: Colors.blue,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/productAddScreen');
+                }),
+          ),
+          const Center(child: Text("Messaging Screen")),
+        ],
+      ),
+    ));
   }
 }

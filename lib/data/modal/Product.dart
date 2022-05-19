@@ -5,6 +5,7 @@ class Product {
   String Price;
   String Category;
   String Description;
+  String ServiceType;
   String Label;
   String Photo;
 
@@ -14,6 +15,7 @@ class Product {
       required this.Price,
       required this.Category,
       required this.Description,
+        required this.ServiceType,
       required this.Label,
       required this.Photo});
 }
