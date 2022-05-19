@@ -1,10 +1,11 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
+/// TODO FOR firestore add firestore new user information (akif)
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:tiktik/Auth/signin_page.dart';
+import 'package:tiktik/StyleProvider.dart';
 
 
 /// Sign Up with email and password
@@ -20,6 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
@@ -30,18 +32,46 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black45,
-      ),
+
       body: Center(
         child: Form(
           key: _formKey,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(25.0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  //? E-Mail
+                  // Name
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.grey, style: BorderStyle.solid),
+                        borderRadius: BorderRadius.circular(14)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _fullNameController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            hintText: "Tam adınızı giriniz..",
+                            hintStyle: TextStyle(color: Colors.grey)),
+                        validator: ( name) {
+                          if (name!.isEmpty) {
+                            return "Lütfen tam adınızı giriniz";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  // E-Mail
                   Container(
                     decoration: BoxDecoration(
                         border: Border.all(
@@ -57,11 +87,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             enabledBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
                             disabledBorder: InputBorder.none,
-                            hintText: "E-Mail",
+                            hintText: "Email..",
                             hintStyle: TextStyle(color: Colors.grey)),
                         validator: ( mail) {
                           if (mail!.isEmpty) {
-                            return "Please enter an email";
+                            return "Lütfen bir email hesabı giriniz";
                           }
                           return null;
                         },
@@ -86,11 +116,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             enabledBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
                             disabledBorder: InputBorder.none,
-                            hintText: "Password",
+                            hintText: "En az 6 haneli bir şifre oluşturunuz..",
                             hintStyle: TextStyle(color: Colors.grey)),
                         validator: ( password) {
                           if (password!.isEmpty) {
-                            return "Please enter an password";
+                            return "Lütfen bir şifre giriniz";
                           }
                           return null;
                         },
@@ -116,15 +146,15 @@ class _RegisterPageState extends State<RegisterPage> {
                             enabledBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
                             disabledBorder: InputBorder.none,
-                            hintText: "Confirm Password",
+                            hintText: "Şifrenizi tekrar giriniz",
                             hintStyle: TextStyle(color: Colors.grey)),
-                        validator: ( password) {
-                          if (password!.isEmpty ) {
-                            return "Please enter an password";
+                        validator: ( confirmPassword) {
+                          if (confirmPassword!.isEmpty ) {
+                            return "Lütfen bir şifre giriniz";
                           }
                           else {
-                            if(password != _passwordController.text){
-                            return "Please enter same passwords !";
+                            if(confirmPassword != _passwordController.text){
+                            return "Lütfen aynı şifreyi tekrar giriniz!";
                           }
                           }
                           return null;
@@ -139,14 +169,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: SignInButtonBuilder(
 
                       icon: Icons.person_add,
-                      backgroundColor: Colors.black45,
+                      backgroundColor: mainColor,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           // TODO: Kayıt İşlemi
                           _register();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => SignInPage(),
+                            ),
+                          );
+
                         }
                       },
-                      text: "Sign Up",
+                      text: "Kayıt ol",
                     ),
                   ),
                   //? Geri bildirim
@@ -162,7 +198,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-
+  /// Auth new user firebase auth and firestore
   void _register() async {
     try {
       final UserCredential userCredential =
@@ -170,7 +206,12 @@ class _RegisterPageState extends State<RegisterPage> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim()); // uzun süren bir işlem
 
+
       final User?  currentUser = userCredential.user;
+
+
+
+
       print(_emailController.text);
       print(_passwordController.text);
 
