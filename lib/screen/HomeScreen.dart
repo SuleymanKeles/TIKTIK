@@ -262,7 +262,9 @@ drawer: NavigationDrawer(),
                             Container(
                             ),
                             StreamBuilder<QuerySnapshot>(
-                              stream:FirebaseFirestore.instance.collection('products').where(
+                              stream:FirebaseFirestore.instance.collection('products')
+                                  .where('userID', isNotEqualTo: currentUserID)
+                                  .where(
                                   'type', arrayContainsAny: [
                                 "hazirda"
                               ]).snapshots(),
