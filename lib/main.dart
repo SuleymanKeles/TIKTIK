@@ -23,6 +23,9 @@ void main() async{
 }
 
 String selectedName = "";
+String? currentUserID = "";
+String? currentUserMail = "";
+String? currentUserName = "";
 String selectedDescription = "";
 
 class MyApp extends StatelessWidget {

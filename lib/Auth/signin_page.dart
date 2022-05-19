@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktik/demo.dart';
+import 'package:tiktik/main.dart';
 import 'package:tiktik/screen/LoginScreen.dart';
 import 'register_page.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -319,6 +320,10 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
         password: _passwordController.text.trimRight(),
       ))
           .user;
+
+      currentUserID = user?.uid;
+      currentUserMail = user?.email;
+      currentUserName = user?.displayName;
 
       // TODO: Kayıt İşlemi
       Scaffold.of(context).showSnackBar(SnackBar(

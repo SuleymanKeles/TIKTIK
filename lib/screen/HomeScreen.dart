@@ -163,11 +163,11 @@ drawer: NavigationDrawer(),
                 //ikinci satır: hey,
                 const SizedBox(height: 10.0),
                 Row(
-                  children: const [
+                  children:  [
                     Text.rich(TextSpan(children: [
                       TextSpan(
-                          text: "Hey John,", //veritabanından çekilecek
-                          style: TextStyle(
+                          text: "Hey $currentUserMail,", //veritabanından çekilecek
+                          style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                               color: Colors.black))
