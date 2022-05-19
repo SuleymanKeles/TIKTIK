@@ -1,4 +1,4 @@
-import 'dart:async';
+/*import 'dart:async';
 
 import 'package:tiktik/data/modal/kirchen_model.dart';
 import 'package:tiktik/data/modal/product_model.dart';
@@ -18,3 +18,4 @@ class Repository {
   Future<Product> fetchMovieList(String productId) =>
       dataApiProvider.fetchProductDetail(productId);
 }
+*/

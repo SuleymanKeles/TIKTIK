@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktik/demo.dart';
+import 'package:tiktik/screen/LoginScreen.dart';
 import 'package:tiktik/screen/UserProfileScreen.dart';
 import '../StyleProvider.dart';
 import 'register_page.dart';
@@ -177,7 +178,7 @@ Row divider(){
         context,
         MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider<ProviderUserData>(
-              create: (_) => ProviderUserData.user(user: _googleUser), child: UserProfileScreen()),
+              create: (_) => ProviderUserData.user(user: _googleUser), child: LoginScreen()),
         ),
       );
 
@@ -370,7 +371,7 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
       // );
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => UserProfileScreen(),
+          builder: (context) => LoginScreen(),
         ),
       );
 

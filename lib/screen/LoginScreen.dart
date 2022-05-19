@@ -43,6 +43,14 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Center(
             child: MaterialButton(
+                child: const Text("Go to kitchenEditScreen Page"),
+                color: Colors.blue,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/kitchenEditScreen');
+                }),
+          ),
+          Center(
+            child: MaterialButton(
                 child: const Text("Go to messagingScreen Page"),
                 color: Colors.blue,
                 onPressed: () {
@@ -67,6 +75,22 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Center(
             child: MaterialButton(
+                child: const Text("Go to productAddScreen Page"),
+                color: Colors.blue,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/productAddScreen');
+                }),
+          ),
+          Center(
+            child: MaterialButton(
+                child: const Text("Go to productEditScreen Page"),
+                color: Colors.blue,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/productEditScreen');
+                }),
+          ),
+          Center(
+            child: MaterialButton(
                 child: const Text("Go to signIn Page"),
                 color: Colors.blue,
                 onPressed: () {
@@ -79,14 +103,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.blue,
                 onPressed: () {
                   Navigator.pushNamed(context, '/userProfileScreen');
-                }),
-          ),
-          Center(
-            child: MaterialButton(
-                child: const Text("Go to productAddScreen Page"),
-                color: Colors.blue,
-                onPressed: () {
-                  Navigator.pushNamed(context, '/productAddScreen');
                 }),
           ),
           const Center(child: Text("Messaging Screen")),
