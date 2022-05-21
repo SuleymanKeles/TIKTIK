@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tiktik/Auth/signin_page.dart';
 import 'package:tiktik/StyleProvider.dart';
+import '../main.dart';
 import '../profileWidget.dart';
 import 'UserProfileInfoPage.dart';
 
@@ -16,20 +17,26 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+   refresh() {
+    setState(() {
+
+    });
+  }
 
 
     ///
-    String userName="Emine Çığ";
-    String userMail="emine.cig67@gmail.com";
-    String userAddress="";
-    String userBio="Yemek yapmak benim isdada sdasd asdasd asdasda sdadasdaşsd aşldk aşlsdkşçin bir tutku...";
-    bool hasKitchen=false;
+    //String currentUserName="Emine Çığ";
+    //String currentUserMail="emine.cig67@gmail.com";
+   // String currentUserAddress="";
+    //String selectedDescription="Yemek yapmak benim isdada sdasd asdasd asdasda sdadasdaşsd aşldk aşlsdkşçin bir tutku...";
+
+
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   GoogleSignIn googleSignIn = GoogleSignIn();
 
-  void resetPassword() {
-    _auth.sendPasswordResetEmail(email: userMail);
+  void resetPassword()  {
+    _auth.sendPasswordResetEmail(email:  currentUserMail as String );
 
   }
 
@@ -82,9 +89,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 child: Column(
 
                   children:  [
-                    Text("Emine YemekSeven",style: TextStyle(fontSize: 20.0,color: Colors.black),),
+                    Text('$currentUserName'.toUpperCase(),style: TextStyle(fontSize: 20.0,color: Colors.black,fontStyle: FontStyle.italic),),
                     SizedBox(height: 5.0 ),
-                    Text("Aşçı",style: TextStyle(fontSize: 15.0,color: Colors.black),),
+                    //Text('$currentUserTitle',style: TextStyle(fontSize: 15.0,color: Colors.black),),
 
 
                   ] ,
@@ -97,7 +104,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           Padding(
 
             padding: const EdgeInsets.only(top:4.0,left:8),
-            child: RichText(text:TextSpan(text:userBio,style: TextStyle(fontSize: 12.0,color:Colors.black45,fontStyle: FontStyle.italic))),
+            child: (currentUserDescription!.isEmpty) ? Text("Kendinizi tanıtacak yazınız yok.\nBilgilerinizi güncelleyiniz") :Text("$currentUserDescription") ,
+
           ),
         ],
       ),
@@ -127,7 +135,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         radius: 20.0,
                       ),
                       title: const Text('Kullanıcı Adı '),
-                      subtitle:  Text(userName),
+                      subtitle:(currentUserName!.isEmpty) ? Text("not found!") :Text("$currentUserName") ,
                       onTap: () {
 
 
@@ -145,7 +153,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         radius: 20.0,
                       ),
                       title: const Text('Mail'),
-                      subtitle:  Text(userMail),
+                      subtitle: (currentUserMail!.isEmpty) ? Text("not found!") :Text("$currentUserMail") ,
                       onTap: () {
 
                       },
@@ -161,10 +169,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         radius: 20.0,
                       ),
                       title: const Text('Adresin'),
-                      subtitle:  RichText(text:TextSpan(text:"Altıyol Meydanı, Söğütlü Çeşme Cd, 34714 Kadıköy/İstanbul",style: TextStyle(color:Colors.black45))),
+                      subtitle: (currentUserAddress.isEmpty) ? Text("Adres bilginiz yok\nEklemek için tıklayın") :Text("$currentUserAddress") ,
                       onTap: () {
 
-
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => UserProfileInfoPage(),
+                          ),
+                        );
 
                       },
                     ),
