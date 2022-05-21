@@ -11,6 +11,7 @@ import 'package:tiktik/demo.dart';
 import 'package:tiktik/screen/LoginScreen.dart';
 import 'package:tiktik/screen/UserProfileScreen.dart';
 import '../StyleProvider.dart';
+import '../main.dart';
 import 'register_page.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -20,7 +21,7 @@ class SignInPage extends StatefulWidget {
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-
+final _messangerKey = GlobalKey<ScaffoldMessengerState>();
 
 class _SignInPageState extends State<SignInPage> {
   /// add style page this variable
@@ -46,6 +47,7 @@ class __SignInBodyState extends State<_SignInBody> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Container(
         child: ListView(
@@ -77,6 +79,8 @@ class __SignInBodyState extends State<_SignInBody> {
               buttonType: Buttons.Google,
               signInMethod: () async => _signInWithGoogle(),
             ),
+
+
 
             divider(),
             goSignUpPage(),
@@ -164,15 +168,24 @@ Row divider(){
           await _auth.signInWithCredential(googleAuthCredential);
 
       final _googleUser = userCredential.user;
+      currentUserID = _googleUser?.uid;
+      currentUserMail = _googleUser?.email;
+      ///todo display name
+      currentUserName = _googleUser?.displayName;
 
       print(userCredential.user!.uid);
       // TODO: Kayıt İşlemi
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text("${googleUser!.displayName},Google ile giriş yapıldı."),
-        ),
-      );
-
+      // Scaffold.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text("${googleUser!.displayName},Google ile giriş yapıldı."),
+      //   ),
+      // );
+      // _messangerKey.currentState?.showSnackBar(
+      //   SnackBar(
+      //     duration:Duration(seconds: 2) ,
+      //     content:  Text('${googleUser!.displayName},Google ile giriş yapıldı.'),
+      //   ),
+      // );
 
       Navigator.pushReplacement(
         context,
@@ -187,21 +200,22 @@ Row divider(){
       debugPrint(e.toString());
 
       // TODO: Kayıt İşlemi
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text("${e.message}"),
-        ),
-      );
+      // Scaffold.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text("${e.message}"),
+      //   ),
+      // );
+
     } catch (e) {
 
       debugPrint(e.toString());
 
-      // TODO: Kayıt İşlemi
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-        ),
-      );
+      // // TODO: Kayıt İşlemi
+      // Scaffold.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text(e.toString()),
+      //   ),
+      // );
     }
   }
 
@@ -291,20 +305,20 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
                   if (_emailController.text == null) {
 
                     // TODO: Kayıt İşlemi
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                          "Lütfen geçerli email hesabınızı giriniz !"),
-                    ));
+                    // Scaffold.of(context).showSnackBar(SnackBar(
+                    //   content: Text(
+                    //       "Lütfen geçerli email hesabınızı giriniz !"),
+                    // ));
                   } else {
 
 
                     // TODO: Kayıt İşlemi
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: (_emailController.text.isEmpty) ?
-                      Text("Lütfen geçerli bir email hesabı giriniz !")   :
-                      Text("Hesabınıza şifre yenileme e-postası gönderildi.") ,
-
-                    ));
+                    // Scaffold.of(context).showSnackBar(SnackBar(
+                    //   content: (_emailController.text.isEmpty) ?
+                    //   Text("Lütfen geçerli bir email hesabı giriniz !")   :
+                    //   Text("Hesabınıza şifre yenileme e-postası gönderildi.") ,
+                    //
+                    // ));
                     resetPassword(_emailController.text.trim());
                   }
                 }),
@@ -336,9 +350,9 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
     } catch (e) {
 
 
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Mail account user not found"),
-      ));
+      // Scaffold.of(context).showSnackBar(SnackBar(
+      //   content: Text("Mail account user not found"),
+      // ));
 
       debugPrint("Şifre yenilerken hata oluştu ! ");
     }
@@ -354,11 +368,16 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
       ))
           .user;
 
+      currentUserID = user?.uid;
+      currentUserMail = user?.email;
+      currentUserName = user?.displayName;
+      print(currentUserID!+" "+currentUserMail!+" "+currentUserName!);
+
       // TODO: Kayıt İşlemi
-      Scaffold.of(context).showSnackBar(SnackBar(
-        duration: Duration(seconds: 2),
-        content: Text("${user?.email} giriş yaptı."),
-      ));
+      // Scaffold.of(context).showSnackBar(SnackBar(
+      //   duration: Duration(seconds: 2),
+      //   content: Text("${user?.email} giriş yaptı."),
+      // ));
 
 
 
@@ -383,17 +402,17 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
     } on FirebaseAuthException catch (e) {
       print("Auth problem");
       debugPrint(e.toString());
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("${e.message}"),
-      ));
+      // Scaffold.of(context).showSnackBar(SnackBar(
+      //   content: Text("${e.message}"),
+      // ));
     } catch (e) {
       print("General Problem");
       debugPrint(e.toString());
 
       // TODO: Kayıt İşlemi
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Bu email ve şifre ile giriş yapılırken hata oluştu"),
-      ));
+      // Scaffold.of(context).showSnackBar(SnackBar(
+      //   content: Text("Bu email ve şifre ile giriş yapılırken hata oluştu"),
+      // ));
     }
   }
 }

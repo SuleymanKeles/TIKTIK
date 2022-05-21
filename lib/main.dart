@@ -13,6 +13,7 @@ import 'package:tiktik/screen/ProductDetailScreen.dart';
 import 'package:tiktik/screen/ProductEditScreen.dart';
 import 'package:tiktik/screen/SingUpScreen.dart';
 import 'package:tiktik/screen/UserProfileScreen.dart';
+import 'package:tiktik/screen/greetingPage.dart';
 
 import 'NavigationPage.dart';
 
@@ -27,6 +28,16 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+/// todo USER DATA can be moved user class
+//String  selectedName          = "";
+String? currentUserID         = "";
+String? currentUserMail       = "";
+String? currentUserName       = "";
+String  currentUserDescription   = "";
+String  currentUserAddress     = "";
+bool hasKitchen=false;
+
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -40,7 +51,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) =>  SignInPage(),
+        '/': (context) =>  GreetingPage(),
         '/navigationPage': (context) =>  NavigationPage(),
 
         '/kitchenAddScreen': (context) =>  KitchenAddScreen(),

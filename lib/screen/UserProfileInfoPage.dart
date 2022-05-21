@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tiktik/main.dart';
+import 'package:tiktik/screen/UserProfileScreen.dart';
 
 import '../StyleProvider.dart';
 
@@ -14,6 +18,8 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
   TextEditingController bioController = TextEditingController();
   TextEditingController mailController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final docUser  = FirebaseFirestore.instance.collection('users').doc(currentUserID);
 
   bool isLoading = false;
 //  User user;
@@ -31,20 +37,92 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
     getUser();
   }
 
-
-
   getUser() async {
     setState(() {
       isLoading = true;
     });
     //DocumentSnapshot doc = await usersRef.document(widget.currentUserId).get();
     //user = User.fromDocument(doc);
+    docUser.get().then(
+          (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        // ...
+         currentUserMail=        data['email'];
+         currentUserName=        data['name'];
+         currentUserDescription= data['description'];
+         currentUserAddress=      data['address'];
+
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
+
+
     displayNameController.text = "";
     bioController.text ="";
     setState(() {
       isLoading = false;
     });
   }
+
+  setUserInfo() async {
+    setState(() {
+      isLoading = true;
+    });
+    String currentUserID=_auth.currentUser!.uid;
+
+
+    var json = {
+      'date': new DateTime.now(),
+      'description': '',
+      'email': '',
+      'image': 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=',
+      'name': '',
+      'userID': '',
+    };
+
+    // json['email'] = currentUserMail as String;
+    // json['userID'] = currentUserID as String;
+    // json['name'] = currentUserName as String;
+
+    //await docUser.set(json);
+    if (!mailController.text.isEmpty) {
+      currentUserMail = mailController.text;
+    }
+    //
+    if (!displayNameController.text.isEmpty) {
+      currentUserName = displayNameController.text;
+    }
+
+    if (!bioController.text.isEmpty) {
+      currentUserDescription = bioController.text;
+    }
+
+    if (!addressController.text.isEmpty) {
+      currentUserAddress = addressController.text;
+    }
+
+
+
+
+
+
+       docUser.update({'name':      currentUserName   });
+       docUser.update({'description': currentUserDescription });
+       docUser.update({'email':    currentUserMail    });
+       docUser.update({'address':    currentUserAddress   });
+
+
+
+
+
+       ///TODO image set
+       //docUser.update({'image': displayNameController.text});
+
+       setState(() {
+         isLoading = false;
+       });
+     }
+
 
   Column buildDisplayNameField() {
     return Column(
@@ -64,7 +142,7 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
               controller: displayNameController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "user.name",
+                hintText: currentUserName,
                 hintStyle: infoHintStyle,
               ),
             ),
@@ -73,7 +151,6 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
       ],
     );
   }
-  
   Column buildBioField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +170,7 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
               controller: bioController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "user.bio",
+                hintText: currentUserDescription,
                 hintStyle: infoHintStyle,
               ),
             ),
@@ -120,7 +197,7 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
               controller: addressController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "user.address",
+                hintText: currentUserAddress,
                 hintStyle: infoHintStyle,
               ),
             ),
@@ -147,7 +224,7 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
               controller: mailController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "user.mail",
+                hintText: currentUserMail,
                 hintStyle: infoHintStyle,
               ),
             ),
@@ -193,8 +270,17 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
                   ),
                 ),
                 ElevatedButton(onPressed: (){
-
-                  Navigator.of(context).pop();
+                  setUserInfo();
+                  print("buton basıldı");
+                  print(currentUserID);
+                  print(currentUserMail);
+                  print(currentUserDescription);
+                  print(currentUserAddress);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => UserProfileScreen(),
+                    ),
+                  );
                 },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.redAccent[400],
