@@ -15,75 +15,280 @@ class MessagingBoxScreen extends StatefulWidget {
 class _MessagingBoxScreenState extends State<MessagingBoxScreen> {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 2,
+    return SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            bottom: const TabBar(
-
-              tabs: [
-                Tab(child: Text("Devam Eden",style: TextStyle(color: Colors.black),)),
-                Tab(child: Text("Geçmiş",style: TextStyle(color: Colors.black),)),
-              ],
-            ),
-            title: const Text('Mesaj kutusu'),
-
-          ),
-          body: TabBarView(
+            body: Column(
+      children: [
+        Container(
+          child: Row(
             children: [
-              ListView.separated(
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                  // Burasi Future builder ile data cekildiginde snapshot ile datanin baglanacagi kisma bir ornek/
-                  Message message = new Message();
-
-                  Key key = Key(index.toString());
-                  return buildListTileMessage(context, key, index, message);
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
-                },
-              ),
-              ListView.separated(
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                  // Burasi Future builder ile data cekildiginde snapshot ile datanin baglanacagi kisma bir ornek/
-                  Message message = new Message();
-
-                  Key key = Key(index.toString());
-                  return buildListTileMessage(context, key, index, message);
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
-                },
-              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
+                child: Text(
+                  "Mesajlar",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+              )
             ],
           ),
         ),
-      );
-  }
-
-  ListTile buildListTileMessage(
-      BuildContext context, Key key, int index, Message message) {
-    return ListTile(
-      leading: Image.network(
-          'https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj'),
-      trailing: IconButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MessagingScreen(key: key)),
-          );
-        },
-        icon: const Icon(Icons.arrow_forward_ios),
-      ),
-      title: Text(
-        "Mutfak ismi gelecek key#$index",
-      ),
-      subtitle: Text(
-        "devam etme durumu key#$index",
-      ),
-      minVerticalPadding: 4,
-    );
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 15,
+          ),
+          child: Row(
+            children: [
+              Container(
+                child: CircleAvatar(
+                  radius: 35,
+                  backgroundImage: NetworkImage(
+                      "https://i.pinimg.com/originals/ae/ec/c2/aeecc22a67dac7987a80ac0724658493.jpg"),
+                ),
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width * 0.68,
+                  padding: EdgeInsets.only(left: 10),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 7),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Izzet Kavak",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Devam ediyor...",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.65,
+                            child: Text(
+                                "Bu yemeğinizde süt ve süt ürünü kullandınız mı?"),
+                          )
+                        ],
+                      ),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 15,
+          ),
+          child: Row(
+            children: [
+              Container(
+                child: CircleAvatar(
+                  radius: 35,
+                  backgroundImage: NetworkImage(
+                      "http://thenewcode.com/assets/images/thumbnails/sarah-parmenter.jpeg"),
+                ),
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width * 0.68,
+                  padding: EdgeInsets.only(left: 10),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 7),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Yeşim Kahya",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Tamamlandı",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.65,
+                            child: Text(
+                                "Çok teşekkür ederim."),
+                          )
+                        ],
+                      ),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 15,
+          ),
+          child: Row(
+            children: [
+              Container(
+                child: CircleAvatar(
+                  radius: 35,
+                  backgroundImage: NetworkImage(
+                      "https://i.pinimg.com/originals/de/64/80/de64801f0275c1ab2ea5a9e2bb3ce7bc.jpg"),
+                ),
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width * 0.68,
+                  padding: EdgeInsets.only(left: 10),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 7),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Yağmur Gökalp",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Tamamlandı",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.65,
+                            child: Text(
+                                "Çocuklarım çok beğendi elinize sağlık."),
+                          )
+                        ],
+                      ),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 15,
+          ),
+          child: Row(
+            children: [
+              Container(
+                child: CircleAvatar(
+                  radius: 35,
+                  backgroundImage: NetworkImage(
+                      "https://xsgames.co/randomusers/assets/avatars/male/46.jpg"),
+                ),
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width * 0.68,
+                  padding: EdgeInsets.only(left: 10),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 7),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Ilker Çaglayan",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Tamamlandı",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.65,
+                            child: Text(
+                                "Çok memnun kaldık bundan sonra da sipariş vereceğiz."),
+                          )
+                        ],
+                      ),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 15,
+          ),
+          child: Row(
+            children: [
+              Container(
+                child: CircleAvatar(
+                  radius: 35,
+                  backgroundImage: NetworkImage(
+                      "https://xsgames.co/randomusers/assets/avatars/male/30.jpg"),
+                ),
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width * 0.68,
+                  padding: EdgeInsets.only(left: 10),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 7),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Pelin Çetin",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Tamamlandı",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.65,
+                            child: Text(
+                                "Sipariş elime ulaştı teşekkürler."),
+                          )
+                        ],
+                      ),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+        Padding(padding: EdgeInsets.only(top:30),child: Container(child: Text("Tüm mesajları gördünüz.",),),)
+      ],
+    )));
   }
 }
