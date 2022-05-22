@@ -10,13 +10,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void _openDrawer() {
-    _scaffoldKey.currentState!.openDrawer();
-  }
-
-  void _closeDrawer() {
-    Navigator.of(context).pop();
-  }
+  // void _openDrawer() {
+  //   _scaffoldKey.currentState!.openDrawer();
+  // }
+  //
+  // void _closeDrawer() {
+  //   Navigator.of(context).pop();
+  // }
 
   int selectedIndex = 0;
   int hazirda_yada_hazirlat = 0;
@@ -70,14 +70,22 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.white,
         elevation: 0.0,
         centerTitle: true,
-        title: const ImageIcon(
-          AssetImage("assets/icons/heart.png"),
-          size: 24,
-          color: Colors.redAccent,
+        title: Image.asset(
+          "assets/images/logo.png",
+          width: 48,
         ),
         leading: Container(),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right: 25, top: 10),
+            child: const CircleAvatar(
+              backgroundImage: AssetImage('assets/images/avatar.png'),
+              radius: 25,
+            ),
+          ),
+        ],
       ),
-drawer: NavigationDrawer(),
+// drawer: NavigationDrawer(),
       //body
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -86,116 +94,65 @@ drawer: NavigationDrawer(),
             child: Column(
               children: [
                 //il satır: menü, gönderim adresi, profil resmi
+                const SizedBox(height: 15.0),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(children: [
-                      Column(children: [
-                        Align(
-                            alignment: Alignment.center,
-                            child: IconButton(
-                              onPressed: _openDrawer,
-                              icon: const ImageIcon(
-                                AssetImage("assets/icons/menu.png"),
-                                size: 30,
-                              ),
-                            ))
-                        //MENU YAPILACAK
-                      ]),
-                      Column(children: [
-                        const Text(
-                          "Gönderim Adresi",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.redAccent),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: SizedBox(
-                            height: 20.0,
-                            child: DropdownButton(
-                              // Initial Value
-                              value: dropdownvalue,
-                              icon: const Icon(Icons.arrow_drop_down),
-                              iconSize: 18,
-                              underline: DropdownButtonHideUnderline(
-                                  child: Container()),
-                              isExpanded: false,
-
-                              // Array list of items
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(
-                                    items,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black),
-                                  ),
-                                );
-                              }).toList(),
-
-                              // change button value to selected value
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownvalue = newValue!;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ]),
-                    ]),
-                    Column(children: const [
-                      CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/avatar.png'),
-                        radius: 25,
-                      )
-                    ]),
-                  ],
-                ),
-
-                //ikinci satır: hey,
-                const SizedBox(height: 10.0),
-                Row(
-                  children: const [
-                    Text.rich(TextSpan(children: [
+                    const Text.rich(TextSpan(children: [
                       TextSpan(
-                          text: "Hey John,", //veritabanından çekilecek
+                          text: "Merhaba Emine,", //veritabanından çekilecek
                           style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                               color: Colors.black))
                     ])),
-                  ],
-                ),
-                const SizedBox(height: 25.0),
-                SizedBox(
-                  height: 60.0,
-                  child: TextFormField(
-                    maxLines: 2,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        borderSide: const BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
+                    Column(children: [
+                      const Text(
+                        "Gönderim Adresi",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.redAccent),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: SizedBox(
+                          height: 20.0,
+                          child: DropdownButton(
+                            // Initial Value
+                            value: dropdownvalue,
+                            icon: const Icon(Icons.arrow_drop_down),
+                            iconSize: 18,
+                            underline:
+                                DropdownButtonHideUnderline(child: Container()),
+                            isExpanded: false,
+
+                            // Array list of items
+                            items: items.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(
+                                  items,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                ),
+                              );
+                            }).toList(),
+
+                            // change button value to selected value
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropdownvalue = newValue!;
+                              });
+                            },
+                          ),
                         ),
                       ),
-
-                      //border: InputBorder.none,
-
-                      fillColor: Color(0xFFEEEEEE),
-                      filled: true,
-                      prefixIcon: const Icon(
-                        Icons.search,
-                        size: 30,
-                      ),
-                      labelText: 'Yemek ya da mutfak ara...',
-                    ),
-                  ),
+                    ]),
+                  ],
                 ),
                 //search
                 const SizedBox(height: 25.0),
@@ -233,253 +190,206 @@ drawer: NavigationDrawer(),
                   height: 30.0,
                 ),
 
-                hazirda_yada_hazirlat == 0
-                    ?
-                    //HAZIRDA
-                    Column(children: [
-                        Row(
-                          children: const [
-                            Text("Hazırda Bekleyen Lezzetler",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w200,
-                                    color: Colors.black)),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1,
-                              crossAxisSpacing: 0.0,
-                              mainAxisSpacing: 10.0,
-                            ),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: HazirdaList.length,
-                            itemBuilder: (context, index) {
-                              return Column(
+                if (hazirda_yada_hazirlat == 0)
+                  Column(children: [
+                    Row(
+                      children: const [
+                        Text("Hazırda Bekleyen Lezzetler",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w200,
+                                color: Colors.black)),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: HazirdaList.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.asset(
+                                  HazirdaList[index]["image"],
+                                  //'assets/images/sarma.png',
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(children: [
+                                Text(
+                                  HazirdaList[index]["name"],
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black),
+                                )
+                              ]),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(
                                 children: [
-                                  Container(
-                                    height: 200.0,
-                                    width: 350.0,
-                                    //padding: EdgeInsets.only(bottom: 24.0),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                child: Image.asset(
-                                                  HazirdaList[index]["image"],
-                                                  //'assets/images/sarma.png',
-                                                  width: 350.0,
-                                                  height: 140.0,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
-                                            ]),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Row(children: [
-                                          Text(
-                                            HazirdaList[index]["name"],
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300,
-                                                color: Colors.black),
-                                          )
-                                        ]),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const ImageIcon(
-                                              AssetImage(
-                                                  "assets/icons/star.png"),
-                                              size: 18,
-                                              color: Color(0xFFFF1744),
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            Text(
-                                              HazirdaList[index]["score"],
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black),
-                                            ),
-                                            const SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            const ImageIcon(
-                                              AssetImage(
-                                                  "assets/icons/truck.png"),
-                                              size: 18,
-                                              color: Color(0xFFFF1744),
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            const Text(
-                                              "Gel Al",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300,
-                                                  color: Colors.black),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                                  const ImageIcon(
+                                    AssetImage("assets/icons/star.png"),
+                                    size: 18,
+                                    color: Color(0xFFFF1744),
                                   ),
+                                  const SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Text(
+                                    HazirdaList[index]["score"],
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black),
+                                  ),
+                                  const SizedBox(
+                                    width: 20.0,
+                                  ),
+                                  const ImageIcon(
+                                    AssetImage("assets/icons/truck.png"),
+                                    size: 18,
+                                    color: Color(0xFFFF1744),
+                                  ),
+                                  const SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  const Text(
+                                    "Gel Al",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black),
+                                  )
                                 ],
-                              );
-                            })
-                      ])
-
-                    //HAZIRLAT
-                    : Column(children: [
-                        Row(
-                          children: const [
-                            Text("Sevdiğin Lezzetleri Sipariş Ver",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w200,
-                                    color: Colors.black)),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1,
-                              crossAxisSpacing: 0.0,
-                              mainAxisSpacing: 10.0,
-                            ),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: HazirlatList.length,
-                            itemBuilder: (context, index) {
-                              return Column(
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.width * 0.1,
+                              ),
+                            ],
+                          );
+                        })
+                  ])
+                else
+                  Column(children: [
+                    Row(
+                      children: const [
+                        Text("Sevdiğin Lezzetleri Sipariş Ver",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w200,
+                                color: Colors.black)),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: HazirlatList.length,
+                        padding: const EdgeInsets.only(bottom: 20),
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.asset(
+                                  HazirdaList[index]["image"],
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(children: [
+                                Text(
+                                  HazirdaList[index]["name"],
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black),
+                                )
+                              ]),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(
                                 children: [
-                                  Container(
-                                    height: 200.0,
-                                    width: 350.0,
-                                    //padding: EdgeInsets.only(bottom: 24.0),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                child: Image.asset(
-                                                  HazirdaList[index]["image"],
-                                                  width: 350.0,
-                                                  height: 140.0,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
-                                            ]),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Row(children: [
-                                          Text(
-                                            HazirdaList[index]["name"],
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300,
-                                                color: Colors.black),
-                                          )
-                                        ]),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const ImageIcon(
-                                              AssetImage(
-                                                  "assets/icons/star.png"),
-                                              size: 18,
-                                              color: Color(0xFFFF1744),
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            Text(
-                                              HazirdaList[index]["score"],
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black),
-                                            ),
-                                            const SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            const ImageIcon(
-                                              AssetImage(
-                                                  "assets/icons/truck.png"),
-                                              size: 18,
-                                              color: Color(0xFFFF1744),
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            const Text(
-                                              "Gel Al",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300,
-                                                  color: Colors.black),
-                                            ),
-                                            const SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            const ImageIcon(
-                                              AssetImage(
-                                                  "assets/icons/chef.png"),
-                                              size: 18,
-                                              color: Color(0xFFFF1744),
-                                            ),
-                                            const SizedBox(
-                                              width: 5.0,
-                                            ),
-                                            Text(
-                                              HazirlatList[index]["cooked_by"],
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300,
-                                                  color: Colors.black),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                                  const ImageIcon(
+                                    AssetImage("assets/icons/star.png"),
+                                    size: 18,
+                                    color: Color(0xFFFF1744),
                                   ),
+                                  const SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Text(
+                                    HazirdaList[index]["score"],
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black),
+                                  ),
+                                  const SizedBox(
+                                    width: 20.0,
+                                  ),
+                                  const ImageIcon(
+                                    AssetImage("assets/icons/truck.png"),
+                                    size: 18,
+                                    color: Color(0xFFFF1744),
+                                  ),
+                                  const SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  const Text(
+                                    "Gel Al",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black),
+                                  ),
+                                  const SizedBox(
+                                    width: 20.0,
+                                  ),
+                                  const ImageIcon(
+                                    AssetImage("assets/icons/chef.png"),
+                                    size: 18,
+                                    color: Color(0xFFFF1744),
+                                  ),
+                                  const SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Text(
+                                    HazirlatList[index]["cooked_by"],
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black),
+                                  )
                                 ],
-                              );
-                            })
-                      ])
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.width * 0.1,
+                              ),
+                            ],
+                          );
+                        })
+                  ])
               ],
             ),
           ),
@@ -491,129 +401,129 @@ drawer: NavigationDrawer(),
   }
 }
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            buildHeader(context),
-            buildMenuItems(context),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildHeader(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.only(
-          left: 20.0, top: 40 + MediaQuery.of(context).padding.top, bottom: 40),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const CircleAvatar(
-                backgroundImage: AssetImage('assets/images/avatar.png'),
-                radius: 35,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 30.0),
-                child: Column(
-                  children: const [
-                    Text(
-                      "Derin Deniz",
-                      style: TextStyle(fontSize: 20.0, color: Colors.black),
-                    ),
-                    Text(
-                      "aşçı",
-                      style: TextStyle(fontSize: 15.0, color: Colors.black),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20.0,
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget buildMenuItems(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-            height: 200.0,
-            width: 270.0,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                color: const Color(0xFFEEEEEE)),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ListTile(
-                leading: const CircleAvatar(
-                  child: ImageIcon(
-                    AssetImage("assets/icons/personalinfo.png"),
-                    size: 20,
-                    color: Color(0xFFFF1744),
-                  ),
-                  backgroundColor: Colors.white,
-                  radius: 20.0,
-                ),
-                title: const Text('Kişisel Bilgiler'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const CircleAvatar(
-                  child: ImageIcon(
-                    AssetImage("assets/icons/map.png"),
-                    size: 20,
-                    color: Color(0xFFFF1744),
-                  ),
-                  backgroundColor: Colors.white,
-                  radius: 20.0,
-                ),
-                title: const Text('Adreslerim'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const CircleAvatar(
-                  child: ImageIcon(
-                    AssetImage("assets/icons/settings.png"),
-                    size: 20,
-                    color: Color(0xFFFF1744),
-                  ),
-                  backgroundColor: Colors.white,
-                  radius: 20.0,
-                ),
-                title: const Text('Ayarlar'),
-                onTap: () {},
-              )
-            ])),
-        const SizedBox(
-          height: 50.0,
-        ),
-        ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                primary: Colors.redAccent[400],
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 85.0, vertical: 15.0)),
-            child: const Text(
-              "MUTFAK AÇ",
-              style: TextStyle(fontSize: 18.0, color: Colors.white),
-            ))
-      ],
-    );
-  }
-}
+// class NavigationDrawer extends StatelessWidget {
+//   const NavigationDrawer({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Drawer(
+//       child: SingleChildScrollView(
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.stretch,
+//           children: <Widget>[
+//             buildHeader(context),
+//             buildMenuItems(context),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+//
+//   Widget buildHeader(BuildContext context) {
+//     return Container(
+//       color: Colors.white,
+//       padding: EdgeInsets.only(
+//           left: 20.0, top: 40 + MediaQuery.of(context).padding.top, bottom: 40),
+//       child: Column(
+//         children: [
+//           Row(
+//             children: [
+//               const CircleAvatar(
+//                 backgroundImage: AssetImage('assets/images/avatar.png'),
+//                 radius: 35,
+//               ),
+//               Padding(
+//                 padding: const EdgeInsets.only(left: 30.0),
+//                 child: Column(
+//                   children: const [
+//                     Text(
+//                       "Derin Deniz",
+//                       style: TextStyle(fontSize: 20.0, color: Colors.black),
+//                     ),
+//                     Text(
+//                       "aşçı",
+//                       style: TextStyle(fontSize: 15.0, color: Colors.black),
+//                     )
+//                   ],
+//                 ),
+//               )
+//             ],
+//           ),
+//           const SizedBox(
+//             height: 20.0,
+//           )
+//         ],
+//       ),
+//     );
+//   }
+//
+//   Widget buildMenuItems(BuildContext context) {
+//     return Column(
+//       children: [
+//         Container(
+//             height: 200.0,
+//             width: 270.0,
+//             decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(15.0),
+//                 color: const Color(0xFFEEEEEE)),
+//             child:
+//                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+//               ListTile(
+//                 leading: const CircleAvatar(
+//                   child: ImageIcon(
+//                     AssetImage("assets/icons/personalinfo.png"),
+//                     size: 20,
+//                     color: Color(0xFFFF1744),
+//                   ),
+//                   backgroundColor: Colors.white,
+//                   radius: 20.0,
+//                 ),
+//                 title: const Text('Kişisel Bilgiler'),
+//                 onTap: () {},
+//               ),
+//               ListTile(
+//                 leading: const CircleAvatar(
+//                   child: ImageIcon(
+//                     AssetImage("assets/icons/map.png"),
+//                     size: 20,
+//                     color: Color(0xFFFF1744),
+//                   ),
+//                   backgroundColor: Colors.white,
+//                   radius: 20.0,
+//                 ),
+//                 title: const Text('Adreslerim'),
+//                 onTap: () {},
+//               ),
+//               ListTile(
+//                 leading: const CircleAvatar(
+//                   child: ImageIcon(
+//                     AssetImage("assets/icons/settings.png"),
+//                     size: 20,
+//                     color: Color(0xFFFF1744),
+//                   ),
+//                   backgroundColor: Colors.white,
+//                   radius: 20.0,
+//                 ),
+//                 title: const Text('Ayarlar'),
+//                 onTap: () {},
+//               )
+//             ])),
+//         const SizedBox(
+//           height: 50.0,
+//         ),
+//         ElevatedButton(
+//             onPressed: () {},
+//             style: ElevatedButton.styleFrom(
+//                 primary: Colors.redAccent[400],
+//                 shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(10.0)),
+//                 padding: const EdgeInsets.symmetric(
+//                     horizontal: 85.0, vertical: 15.0)),
+//             child: const Text(
+//               "MUTFAK AÇ",
+//               style: TextStyle(fontSize: 18.0, color: Colors.white),
+//             ))
+//       ],
+//     );
+//   }
+// }

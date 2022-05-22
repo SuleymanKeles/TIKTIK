@@ -40,70 +40,79 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
   @override
   Widget build(BuildContext context) => Builder(
-    builder: (context) => Scaffold(
-      appBar: AppBar(title: const Text("Ürün Ekle ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400),),
-        elevation: 0.0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0,vertical: 10.0),
-        child: SafeArea(
-            child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ProfileWidget(
-                      imagePath: "assets/images/mercimekköftesi.png",
-                      isEdit: true,
-                      onClicked: () async {},
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              "Ürün Ekle ",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+            ),
+            elevation: 0.0,
+          ),
+          body: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+            child: SafeArea(
+                child: SingleChildScrollView(
+                    child: Column(
+              children: [
+                ProfileWidget(
+                  imagePath: "assets/images/mercimekköftesi.png",
+                  isEdit: true,
+                  onClicked: () async {},
+                ),
+                const SizedBox(height: 20),
+                TextFieldWidget(
+                  label: 'ÜRÜN ADI',
+                  text: "",
+                  onChanged: (name) {},
+                ),
+                const SizedBox(height: 20),
+                TextFieldWidget(
+                  label: 'KATEGORİ',
+                  text: "",
+                  onChanged: (email) {},
+                ),
+                const SizedBox(height: 20),
+                TextFieldWidget(
+                  label: 'AÇIKLAMA',
+                  text: "",
+                  maxLines: 3,
+                  onChanged: (about) {},
+                ),
+                const SizedBox(height: 20),
+                TextFieldWidget(
+                  label: 'SERVİS TİPİ',
+                  text: "",
+                  onChanged: (about) {},
+                ),
+                const SizedBox(height: 20),
+                TextFieldWidget(
+                  label: 'ÜCRET',
+                  text: "",
+                  onChanged: (about) {},
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.redAccent[400],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 50,
+                    child: const Center(
+                      child: Text(
+                        "EKLE",
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      ),
                     ),
-                    const SizedBox(height: 20),
-                    TextFieldWidget(
-                      label: 'ÜRÜN ADI',
-                      text: "",
-                      onChanged: (name) {},
-                    ),
-                    const SizedBox(height: 20),
-                    TextFieldWidget(
-                      label: 'KATEGORİ',
-                      text: "",
-                      onChanged: (email) {},
-                    ),
-                    const SizedBox(height: 20),
-                    TextFieldWidget(
-                      label: 'AÇIKLAMA',
-                      text: "",
-                      maxLines: 3,
-                      onChanged: (about) {},
-                    ),
-                    const SizedBox(height: 20),
-                    TextFieldWidget(
-                      label: 'SERVİS TİPİ',
-                      text: "",
-                      onChanged: (about) {},
-                    ),
-                    const SizedBox(height: 20),
-                    TextFieldWidget(
-                      label: 'ÜCRET',
-                      text: "",
-                      onChanged: (about) {},
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.redAccent[400],
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 145.0, vertical: 15.0)),
-                        child: const Text(
-                          "ÜRÜN EKLE",
-                          style: TextStyle(fontSize: 18.0, color: Colors.white),
-                        ))
-                  ],
-                )
-            )
+                  ),
+                ),
+              ],
+            ))),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 }

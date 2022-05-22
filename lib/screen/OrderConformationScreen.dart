@@ -38,27 +38,68 @@ class _OrderConformationScreenState extends State<OrderConformationScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              title: const Text("OrderConformationScreen Detail Screen"),
-            ),
-            body: Card(
-              margin: EdgeInsets.all(10),
-              elevation: 10,
-              child: Column(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Sipariş Tamamlandı"),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Image(
+                image: AssetImage('assets/icons/greeting.png'),
+                width: 200,
+                height: 200,
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Column(
                 children: [
-                  Image.network(
-                    product.Photo,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                  ),
-                  ListTile(
-                    title: Text(product.Name),
-                    subtitle: Text("Price: ${product.Price}"),
-                  ),
                   Text(
-                      "${user.firstName} & ${product.Name} Şipariş tamamlandı.")
+                    product.Name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text("Price: ${product.Price}"),
                 ],
               ),
-            )));
+              const SizedBox(
+                height: 50,
+              ),
+              Text("${user.firstName} & ${product.Name} Şipariş tamamlandı."),
+              const SizedBox(
+                height: 50,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.redAccent[400],
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                ),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 50,
+                  child: const Center(
+                    child: Text(
+                      "TAMAM",
+                      style: TextStyle(fontSize: 18.0, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

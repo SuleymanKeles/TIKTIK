@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tiktik/main.dart';
+import 'package:tiktik/screen/LoginScreen.dart';
 import 'package:tiktik/screen/UserProfileScreen.dart';
+
+import '../Auth/signin_page.dart';
 
 
 
@@ -39,7 +42,7 @@ class GreetingPage extends StatelessWidget {
                    onPressed: (){
                      Navigator.of(context).push(
                        MaterialPageRoute(
-                         builder: (context) => UserProfileScreen(),
+                         builder: (context) => SignInPage(),
                        ),
                      );
                    },

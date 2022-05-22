@@ -73,17 +73,23 @@ class _KitchenEditScreenState extends State<KitchenEditScreen> {
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.redAccent[400],
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 145.0, vertical: 15.0)),
-                        child: const Text(
-                          "KAYDET",
-                          style: TextStyle(fontSize: 18.0, color: Colors.white),
-                        ))
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.redAccent[400],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                      ),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: 50,
+                        child: const Center(
+                          child: Text(
+                            "KAYDET",
+                            style: TextStyle(fontSize: 18.0, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 )
             )

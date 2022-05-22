@@ -30,13 +30,12 @@ Future<void> main() async {
 
 /// todo USER DATA can be moved user class
 //String  selectedName          = "";
-String? currentUserID         = "";
-String? currentUserMail       = "";
-String? currentUserName       = "";
-String  currentUserDescription   = "";
-String  currentUserAddress     = "";
-bool hasKitchen=false;
-
+String? currentUserID = "";
+String? currentUserMail = "";
+String? currentUserName = "";
+String currentUserDescription = "";
+String currentUserAddress = "";
+bool hasKitchen = false;
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -45,34 +44,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(color: Colors.black),
+            titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.w400)),
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) =>  GreetingPage(),
-        '/navigationPage': (context) =>  NavigationPage(),
-
-        '/kitchenAddScreen': (context) =>  KitchenAddScreen(),
-        '/kitchenEditScreen': (context) =>  KitchenEditScreen(),
-        '/kitchenDetailScreen': (context) =>  KitchenDetailScreen(),
-
-        '/messagingScreen': (context) =>  MessagingScreen(),
-        '/orderConformationScreen': (context) =>  OrderConformationScreen(),
-
-        '/productAddScreen': (context) =>  ProductAddScreen(),
-        '/productDetailScreen': (context) =>  ProductDetailScreen(),
-        '/productEditScreen': (context) =>  ProductEditScreen(),
-
-        '/singUpScreen': (context) =>  SingUpScreen(),
-        '/userProfileScreen': (context) =>  UserProfileScreen(),
-
-
+        '/': (context) => GreetingPage(),
+        '/navigationPage': (context) => NavigationPage(),
+        '/kitchenAddScreen': (context) => KitchenAddScreen(),
+        '/kitchenEditScreen': (context) => KitchenEditScreen(),
+        '/kitchenDetailScreen': (context) => KitchenDetailScreen(),
+        '/messagingScreen': (context) => MessagingScreen(),
+        '/orderConformationScreen': (context) => OrderConformationScreen(),
+        '/productAddScreen': (context) => ProductAddScreen(),
+        '/productDetailScreen': (context) => ProductDetailScreen(),
+        '/productEditScreen': (context) => ProductEditScreen(),
+        '/singUpScreen': (context) => SingUpScreen(),
+        '/userProfileScreen': (context) => UserProfileScreen(),
       },
       debugShowCheckedModeBanner: false,
     );
   }
 }
-
-

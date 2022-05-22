@@ -94,9 +94,15 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                 ),
                 const SizedBox(height: 20),
                 Column(children: [
-                  const Text("Ayşe'nin mutfağı",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400), textAlign: TextAlign.left), //mutfak ismi
+                  const Text("Ayşe'nin mutfağı",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                      textAlign: TextAlign.left), //mutfak ismi
                   const SizedBox(height: 20),
-                  const Text("harika yemekler",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w300), textAlign: TextAlign.left), //description
+                  const Text("harika yemekler",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                      textAlign: TextAlign.left), //description
                   const SizedBox(height: 20),
                   Row(
                     children: const [
@@ -135,7 +141,6 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                       )
                     ],
                   ),
-
                 ]),
                 const SizedBox(height: 40),
                 Container(
@@ -143,7 +148,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: List.generate(
                       tabs.length,
-                          (index) => GestureDetector(
+                      (index) => GestureDetector(
                         onTap: () => setState(() {
                           hazirda_yada_hazirlat = index;
                         }),
@@ -171,233 +176,183 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                 const SizedBox(
                   height: 30.0,
                 ),
-
                 hazirda_yada_hazirlat == 0
                     ?
-                //HAZIRDA
-                Column(children: [
-
-                  GridView.builder(
-                      gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        crossAxisSpacing: 0.0,
-                        mainAxisSpacing: 10.0,
-                      ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: HazirdaList.length,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Container(
-                              height: 200.0,
-                              width: 350.0,
-                              //padding: EdgeInsets.only(bottom: 24.0),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
+                    //HAZIRDA
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: HazirdaList.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.asset(
+                                  HazirdaList[index]["image"],
+                                  //'assets/images/sarma.png',
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  fit: BoxFit.fill,
+                                ),
                               ),
-                              child: Column(
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(children: [
+                                Text(
+                                  HazirdaList[index]["name"],
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black),
+                                )
+                              ]),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(
                                 children: [
-                                  Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                          BorderRadius.circular(8.0),
-                                          child: Image.asset(
-                                            HazirdaList[index]["image"],
-                                            //'assets/images/sarma.png',
-                                            width: 350.0,
-                                            height: 140.0,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ]),
-                                  const SizedBox(
-                                    height: 10.0,
+                                  const ImageIcon(
+                                    AssetImage("assets/icons/star.png"),
+                                    size: 18,
+                                    color: Color(0xFFFF1744),
                                   ),
-                                  Row(children: [
-                                    Text(
-                                      HazirdaList[index]["name"],
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                          color: Colors.black),
-                                    )
-                                  ]),
                                   const SizedBox(
-                                    height: 10.0,
+                                    width: 5.0,
                                   ),
-                                  Row(
-                                    children: [
-                                      const ImageIcon(
-                                        AssetImage(
-                                            "assets/icons/star.png"),
-                                        size: 18,
-                                        color: Color(0xFFFF1744),
-                                      ),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      Text(
-                                        HazirdaList[index]["score"],
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black),
-                                      ),
-                                      const SizedBox(
-                                        width: 20.0,
-                                      ),
-                                      const ImageIcon(
-                                        AssetImage(
-                                            "assets/icons/truck.png"),
-                                        size: 18,
-                                        color: Color(0xFFFF1744),
-                                      ),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      const Text(
-                                        "Gel Al",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w300,
-                                            color: Colors.black),
-                                      )
-                                    ],
+                                  Text(
+                                    HazirdaList[index]["score"],
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black),
+                                  ),
+                                  const SizedBox(
+                                    width: 20.0,
+                                  ),
+                                  const ImageIcon(
+                                    AssetImage("assets/icons/truck.png"),
+                                    size: 18,
+                                    color: Color(0xFFFF1744),
+                                  ),
+                                  const SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  const Text(
+                                    "Gel Al",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black),
                                   )
                                 ],
                               ),
-                            ),
-                          ],
-                        );
-                      })
-                ])
-
-                //HAZIRLAT
-                    : Column(children: [
-                  GridView.builder(
-                      gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        crossAxisSpacing: 0.0,
-                        mainAxisSpacing: 10.0,
-                      ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: HazirlatList.length,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Container(
-                              height: 200.0,
-                              width: 350.0,
-                              //padding: EdgeInsets.only(bottom: 24.0),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
+                              SizedBox(
+                                height: MediaQuery.of(context).size.width * 0.1,
                               ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                          BorderRadius.circular(8.0),
-                                          child: Image.asset(
-                                            HazirdaList[index]["image"],
-                                            width: 350.0,
-                                            height: 140.0,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ]),
-                                  const SizedBox(
-                                    height: 10.0,
+                            ],
+                          );
+                        })
+
+                    //HAZIRLAT
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: HazirlatList.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).size.width * 0.1,
+                            ),
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.asset(
+                                    HazirdaList[index]["image"],
+                                    width:
+                                        MediaQuery.of(context).size.width * 1,
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    fit: BoxFit.fill,
                                   ),
-                                  Row(children: [
+                                ),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                Row(children: [
+                                  Text(
+                                    HazirdaList[index]["name"],
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black),
+                                  )
+                                ]),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                Row(
+                                  children: [
+                                    const ImageIcon(
+                                      AssetImage("assets/icons/star.png"),
+                                      size: 18,
+                                      color: Color(0xFFFF1744),
+                                    ),
+                                    const SizedBox(
+                                      width: 5.0,
+                                    ),
                                     Text(
-                                      HazirdaList[index]["name"],
+                                      HazirdaList[index]["score"],
                                       style: const TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black),
+                                    ),
+                                    const SizedBox(
+                                      width: 20.0,
+                                    ),
+                                    const ImageIcon(
+                                      AssetImage("assets/icons/truck.png"),
+                                      size: 18,
+                                      color: Color(0xFFFF1744),
+                                    ),
+                                    const SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    const Text(
+                                      "Gel Al",
+                                      style: TextStyle(
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w300,
                                           color: Colors.black),
-                                    )
-                                  ]),
-                                  const SizedBox(
-                                    height: 10.0,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const ImageIcon(
-                                        AssetImage(
-                                            "assets/icons/star.png"),
-                                        size: 18,
-                                        color: Color(0xFFFF1744),
-                                      ),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      Text(
-                                        HazirdaList[index]["score"],
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black),
-                                      ),
-                                      const SizedBox(
-                                        width: 20.0,
-                                      ),
-                                      const ImageIcon(
-                                        AssetImage(
-                                            "assets/icons/truck.png"),
-                                        size: 18,
-                                        color: Color(0xFFFF1744),
-                                      ),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      const Text(
-                                        "Gel Al",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w300,
-                                            color: Colors.black),
-                                      ),
-                                      const SizedBox(
-                                        width: 20.0,
-                                      ),
-                                      const ImageIcon(
-                                        AssetImage(
-                                            "assets/icons/chef.png"),
-                                        size: 18,
-                                        color: Color(0xFFFF1744),
-                                      ),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      Text(
-                                        HazirlatList[index]["cooked_by"],
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w300,
-                                            color: Colors.black),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
+                                    ),
+                                    const SizedBox(
+                                      width: 20.0,
+                                    ),
+                                    const ImageIcon(
+                                      AssetImage("assets/icons/chef.png"),
+                                      size: 18,
+                                      color: Color(0xFFFF1744),
+                                    ),
+                                    const SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text(
+                                      HazirlatList[index]["cooked_by"],
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        );
-                      }
-                  )
-                ]
-                )
+                          );
+                        })
               ],
             ))),
           ),
