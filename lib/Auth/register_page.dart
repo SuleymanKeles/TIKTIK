@@ -10,51 +10,41 @@ import 'package:tiktik/StyleProvider.dart';
 
 import '../main.dart';
 
-
 /// Sign Up with email and password
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
-
 class _RegisterPageState extends State<RegisterPage> {
-
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _success = true;
-   String _message="";
+  String _message = "";
 
   //String selectedName="";
   //String? currentUserMail= "";
   //String currentUserID="";
- // String? currentUserMail;
+  // String? currentUserMail;
   //String? currentUserName;
-
-
 
   @override
   Widget build(BuildContext context) {
-
     void _register() async {
-
       try {
         final UserCredential userCredential =
-        await _auth.createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim(),
+            await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        ); // uzun süren bir işlem
 
-        ) ;// uzun süren bir işlem
-
-
-
-        final User?  currentUser = userCredential.user;
+        final User? currentUser = userCredential.user;
 
         currentUserID = currentUser!.uid;
         currentUserMail = currentUser.email;
@@ -63,7 +53,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
         print("regFunct");
 
-
         print(currentUserMail);
         print(currentUserName);
         print(_passwordController.text);
@@ -71,7 +60,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
         //TODO verification
         if (currentUser != null) {
-
           //Sends auth info mail to the user
           //user.sendEmailVerification();
           // setState(() {
@@ -100,13 +88,15 @@ class _RegisterPageState extends State<RegisterPage> {
         print(e); //dynamic her sey olabilir
       }
 
-      final docUser  = FirebaseFirestore.instance.collection('users').doc(currentUserID);
+      final docUser =
+          FirebaseFirestore.instance.collection('users').doc(currentUserID);
 
       var json = {
         'date': new DateTime.now(),
         'description': '',
         'email': '',
-        'image': 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=',
+        'image':
+            'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=',
         'name': '',
         'userID': '',
       };
@@ -116,18 +106,18 @@ class _RegisterPageState extends State<RegisterPage> {
       json['name'] = currentUserName as String;
 
       await docUser.set(json);
-
-
     }
-    Future createUser({required String name}) async {
 
-      final docUser  = FirebaseFirestore.instance.collection('users').doc(currentUserID);
+    Future createUser({required String name}) async {
+      final docUser =
+          FirebaseFirestore.instance.collection('users').doc(currentUserID);
 
       var json = {
         'date': new DateTime.now(),
         'description': '',
         'email': '',
-        'image': 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=',
+        'image':
+            'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=',
         'name': '',
         'userID': '',
       };
@@ -140,7 +130,6 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     return Scaffold(
-
       body: Center(
         child: Form(
           key: _formKey,
@@ -167,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             disabledBorder: InputBorder.none,
                             hintText: "Tam adınızı giriniz..",
                             hintStyle: TextStyle(color: Colors.grey)),
-                        validator: ( name) {
+                        validator: (name) {
                           if (name!.isEmpty) {
                             return "Lütfen tam adınızı giriniz";
                           }
@@ -197,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             disabledBorder: InputBorder.none,
                             hintText: "Email..",
                             hintStyle: TextStyle(color: Colors.grey)),
-                        validator: ( mail) {
+                        validator: (mail) {
                           if (mail!.isEmpty) {
                             return "Lütfen bir email hesabı giriniz";
                           }
@@ -226,7 +215,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             disabledBorder: InputBorder.none,
                             hintText: "En az 6 haneli bir şifre oluşturunuz..",
                             hintStyle: TextStyle(color: Colors.grey)),
-                        validator: ( password) {
+                        validator: (password) {
                           if (password!.isEmpty) {
                             return "Lütfen bir şifre giriniz";
                           }
@@ -256,14 +245,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             disabledBorder: InputBorder.none,
                             hintText: "Şifrenizi tekrar giriniz",
                             hintStyle: TextStyle(color: Colors.grey)),
-                        validator: ( confirmPassword) {
-                          if (confirmPassword!.isEmpty ) {
+                        validator: (confirmPassword) {
+                          if (confirmPassword!.isEmpty) {
                             return "Lütfen bir şifre giriniz";
-                          }
-                          else {
-                            if(confirmPassword != _passwordController.text){
-                            return "Lütfen aynı şifreyi tekrar giriniz!";
-                          }
+                          } else {
+                            if (confirmPassword != _passwordController.text) {
+                              return "Lütfen aynı şifreyi tekrar giriniz!";
+                            }
                           }
                           return null;
                         },
@@ -275,21 +263,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     alignment: Alignment.center,
                     child: SignInButtonBuilder(
-
                       icon: Icons.person_add,
                       backgroundColor: mainColor,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           // TODO: Kayıt İşlemi
                           _register();
-                        //  createUser(name: 'name');
+                          //  createUser(name: 'name');
 
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => SignInPage(),
-                            ),
-                          );
-
+                          Navigator.pop(context);
                         }
                       },
                       text: "Kayıt ol",
@@ -298,7 +280,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   //? Geri bildirim
                   Container(
                     alignment: Alignment.center,
-                    child: Text(_success == null ? '' : _message  ),
+                    child: Text(_success == null ? '' : _message),
                   ),
                 ],
               ),
@@ -308,6 +290,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+
   /// Auth new user firebase auth and firestore
 
 }

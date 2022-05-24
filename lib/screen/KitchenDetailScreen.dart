@@ -3,6 +3,7 @@ import 'package:tiktik/data/modal/Kitchen.dart';
 
 import '../data/modal/Product.dart';
 import '../data/modal/User.dart';
+import '../data/modal/screenArguments.dart';
 import '../widget/profile_widget.dart';
 import '../widget/textfield_widget.dart';
 
@@ -53,7 +54,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
       "image": "assets/images/sarma.png",
       "name": "Zeytinyağlı Yaprak Sarma ",
       "score": "4.7",
-      "cooked_by": "Ayşe'nin mutfağı"
+      "cooked_by": "Selma'nin mutfağı"
     },
     {
       "image": "assets/images/mercimekköftesi.png",
@@ -71,7 +72,6 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
               "Mutfak Detayı",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
             ),
-            elevation: 0.0,
           ),
           body: Padding(
             padding:
@@ -94,7 +94,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                 ),
                 const SizedBox(height: 20),
                 Column(children: [
-                  const Text("Ayşe'nin mutfağı",
+                  const Text("Selma'nin mutfağı",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
                       textAlign: TextAlign.left), //mutfak ismi
@@ -186,15 +186,28 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                         itemBuilder: (context, index) {
                           return Column(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Image.asset(
-                                  HazirdaList[index]["image"],
-                                  //'assets/images/sarma.png',
-                                  width: MediaQuery.of(context).size.width * 1,
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.4,
-                                  fit: BoxFit.fill,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context, '/productDetailScreen',
+                                    // Screen Arguments class used with navigator.
+                                    arguments: ScreenArguments(
+                                      dataType: 'product',
+                                      data: '0005314',
+                                    ),
+                                  );
+
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.asset(
+                                    HazirdaList[index]["image"],
+                                    //'assets/images/sarma.png',
+                                    width: MediaQuery.of(context).size.width * 1,
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                               const SizedBox(

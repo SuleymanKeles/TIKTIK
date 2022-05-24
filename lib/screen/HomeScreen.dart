@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../data/modal/screenArguments.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -49,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "image": "assets/images/sarma.png",
       "name": "Zeytinyağlı Yaprak Sarma ",
       "score": "4.7",
-      "cooked_by": "Ayşe'nin mutfağı"
+      "cooked_by": "Selma'nin mutfağı"
     },
     {
       "image": "assets/images/mercimekköftesi.png",
@@ -101,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     const Text.rich(TextSpan(children: [
                       TextSpan(
-                          text: "Merhaba Emine,", //veritabanından çekilecek
+                          text: "Merhaba Selma,", //veritabanından çekilecek
                           style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
@@ -211,15 +213,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           return Column(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Image.asset(
-                                  HazirdaList[index]["image"],
-                                  //'assets/images/sarma.png',
-                                  width: MediaQuery.of(context).size.width * 1,
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.4,
-                                  fit: BoxFit.fill,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, '/productDetailScreen',
+                                    // Screen Arguments class used with navigator.
+                                    arguments: ScreenArguments(
+                                      dataType: 'product',
+                                      data: '0005314',
+                                    ),
+                                  );
+
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.asset(
+                                    HazirdaList[index]["image"],
+                                    //'assets/images/sarma.png',
+                                    width:
+                                        MediaQuery.of(context).size.width * 1,
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                               const SizedBox(

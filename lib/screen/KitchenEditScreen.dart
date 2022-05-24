@@ -17,7 +17,7 @@ class _KitchenEditScreenState extends State<KitchenEditScreen> {
   Kitchen kitchen = Kitchen(
     KitchenID: "KitchenID",
     UserID: "UserID",
-    KitchenName: "Ayşe'nin Mutfağı",
+    KitchenName: "Selma'nin Mutfağı",
     Point: "Point",
     ProductList: "Zeytinyağlı Yaprak Sarma",
     CoverPhoto:

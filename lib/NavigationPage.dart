@@ -4,14 +4,19 @@ import 'package:tiktik/screen/MessagingBoxScreen.dart';
 import 'package:tiktik/screen/UserProfileScreen.dart';
 
 class NavigationPage extends StatefulWidget {
-  const NavigationPage({Key? key}) : super(key: key);
+  final int index;
+
+  const NavigationPage({Key? key, required this.index}) : super(key: key);
 
   @override
-  _NavigationPageState createState() => _NavigationPageState();
+  _NavigationPageState createState() => _NavigationPageState(index);
 }
 
 class _NavigationPageState extends State<NavigationPage> {
-  int _selectedIndex = 0;
+  _NavigationPageState(this._selectedIndex);
+
+  int _selectedIndex;
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[

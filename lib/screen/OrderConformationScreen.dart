@@ -14,8 +14,8 @@ class OrderConformationScreen extends StatefulWidget {
 class _OrderConformationScreenState extends State<OrderConformationScreen> {
   Product product = Product(
     ProductID: "ProductID",
-    Name: "Product Name",
-    Price: "Price",
+    Name: "Zeytın Yağlı Sarma",
+    Price: "50 TL",
     Category: "Category",
     Description: "Description",
     Label: "Label",
@@ -27,7 +27,7 @@ class _OrderConformationScreenState extends State<OrderConformationScreen> {
     userID: "userID",
     mailAddress: "mailAddress",
     password: "password",
-    firstName: "firstName",
+    firstName: "Fatma Demir",
     lastName: "lastName",
     birthDate: "birthDate",
     biography: "biography",
@@ -78,6 +78,7 @@ class _OrderConformationScreenState extends State<OrderConformationScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
+                  Navigator.pop(context);
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(

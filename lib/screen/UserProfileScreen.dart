@@ -34,6 +34,35 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     _auth.sendPasswordResetEmail(email: currentUserMail as String);
   }
 
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Şifre Yenileme İsteği'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(currentUserMail!.toString()),
+                Text('Mail adresine şifre yenileme e posta gönderildi.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Tamam'),
+              onPressed: () {
+                resetPassword();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -105,7 +134,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             padding: const EdgeInsets.only(top: 4.0, left: 8),
             child: (currentUserDescription.isEmpty)
                 ? Text(
-                    "Kendinizi tanıtacak yazınız yok.\nBilgilerinizi güncelleyiniz")
+                    "İki yıldır kendi yaptığım\npastane ürünlerini satıyorum.")
                 : Text("$currentUserDescription"),
           ),
         ],
@@ -212,7 +241,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       title: const Text('Şifre Yenile'),
                       onTap: () {
                         ///TODO firebase send reset email
-                        resetPassword();
+
+                        _showMyDialog();
                       },
                     ),
                     ListTile(
@@ -317,7 +347,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           height: 20.0,
         ),
         ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              (!hasKitchen)
+                  ? Navigator.pushNamed(context, '/kitchenAddScreen')
+                  : Navigator.pushNamed(context, '/kitchenDetailScreen');
+            },
             style: ElevatedButton.styleFrom(
                 primary: Colors.redAccent[400],
                 shape: RoundedRectangleBorder(
@@ -327,14 +361,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
             /// TODO mutfağıma git mutfak aç olsun
             child: (!hasKitchen)
-                ? Text(
+                ? const Text(
                     "Mutfak Aç",
                     style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.white,
                         fontStyle: FontStyle.italic),
                   )
-                : Text(
+                : const Text(
                     "Mutfağıma Git",
                     style: TextStyle(
                         fontSize: 18.0,

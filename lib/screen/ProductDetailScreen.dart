@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktik/StyleProvider.dart';
 
+import '../data/modal/screenArguments.dart';
 import '../profileWidget.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -14,9 +15,10 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Ürün Düzenle",
+          title: const Text("Ürün Detay Sayfası",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400))),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
@@ -79,12 +81,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       radius: 25,
                     ),
                     SizedBox(width: 15),
-                    Text('Sena\'nın Mutfağı ',
+                    Text('Selma\'nın Mutfağı ',
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             fontFamily: "Ubuntu")),
-                    SizedBox(width: 90),
+                    SizedBox(width: 70),
                     Icon(
                       Icons.chevron_right,
                     )
@@ -92,10 +94,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 const SizedBox(height: 40),
                 Row(
-                  children: const <Widget>[
-                    SizedBox(width: 6),
-                    Text('Mercimek Köftesi',
-                        style: TextStyle(
+                  children: <Widget>[
+                    const SizedBox(width: 6),
+                    Text('Mercimek Köftesi ${args.data.toString()}',
+                        style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             fontFamily: "Ubuntu"))
@@ -113,20 +115,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ],
                 ),
                 const SizedBox(height: 30),
-                Row(children: <Widget>[
-                  ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.redAccent[400],
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 110.0, vertical: 15.0)),
-                      child: const Text(
-                        "SOHBETE BAŞLA",
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/messagingScreen',
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.redAccent[400],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 50,
+                    child: const Center(
+                      child: Text(
+                        "SİPARİŞ VER",
                         style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ))
-                ])
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
