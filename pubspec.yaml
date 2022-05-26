@@ -44,6 +44,12 @@ dependencies:
   launch_review: ^3.0.1
   auto_size_text: ^2.1.0
   cloud_firestore: ^3.1.15
+  image_cropper: ^2.0.3
+  image_picker: ^0.8.5+3
+  path_provider: ^2.0.10
+  flutter_image_compress: ^1.1.0
+  path: ^1.8.0
+  firebase_storage: ^10.2.16
 
 dev_dependencies:
   flutter_test:
