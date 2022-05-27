@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktik/Auth/signin_page.dart';
 import 'package:tiktik/StyleProvider.dart';
+import 'package:tiktik/screen/HomeScreen.dart';
 import '../main.dart';
 import '../profileWidget.dart';
+import 'ProductDetailScreen.dart';
 import 'UserProfileInfoPage.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -101,15 +105,34 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               //   AssetImage('assets/images/avatar.png'),
               //   radius: 35,
               // ),
-              ProfileWidget(
-                imagePath: "assets/images/avatar.png",
-                onClicked: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => UserProfileInfoPage()),
-                  );
-                },
-              ),
+
+
+
+              StreamBuilder<DocumentSnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(currentUserID)
+                      .snapshots(),
+
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return new Text("Loading");
+                    } else {
+                      final data = snapshot.requireData;
+                      return ProfileWidget(
+                        imagePath: data['image'],
+                        onClicked: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => UserProfileInfoPage()),
+                          );
+                        },
+                      );
+                    }
+                  }),
+
+
+
 
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
@@ -130,13 +153,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ],
           ),
           const SizedBox(height: 15.0),
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0, left: 8),
-            child: (currentUserDescription.isEmpty)
-                ? Text(
-                    "İki yıldır kendi yaptığım\npastane ürünlerini satıyorum.")
-                : Text("$currentUserDescription"),
-          ),
+          StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(currentUserID)
+                  .snapshots(),
+
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return new Text("Loading");
+                } else {
+                  final data = snapshot.requireData;
+                  return (data['description'].isEmpty)
+                      ? Text("Henüz kendinizi tanıtan bir yazı girmediniz.")
+                      : Text(data['description']);
+                }
+              }),
         ],
       ),
     );
@@ -257,7 +289,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                       title: const Text('Çıkış Yap'),
                       onTap: () async {
-                        /// todo: LOG OUT operation
+
+
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+                        prefs.setString('currentUserID', "");
+
+                        prefs.setString('currentUserName', "");
+
+                        prefs.setString('currentUserMail', "");
+
                         final user = _auth.currentUser;
                         if (user == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -346,38 +388,128 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         const SizedBox(
           height: 20.0,
         ),
-        ElevatedButton(
-            onPressed: () {
-              (!hasKitchen)
-                  ? Navigator.pushNamed(context, '/kitchenAddScreen')
-                  : Navigator.pushNamed(context, '/kitchenDetailScreen');
-            },
-            style: ElevatedButton.styleFrom(
-                primary: Colors.redAccent[400],
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 85.0, vertical: 15.0)),
 
-            /// TODO mutfağıma git mutfak aç olsun
-            child: (!hasKitchen)
-                ? const Text(
+
+        StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(currentUserID)
+                .snapshots(),
+
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return new Text("Loading");
+              } else {
+                final data = snapshot.requireData;
+                return (data['hasKitchen'] == 0)
+                    ?
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/kitchenAddScreen');
+
+                  },
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.redAccent[400],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 85.0, vertical: 15.0)),
+                  child:
+                  Text(
                     "Mutfak Aç",
                     style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.white,
                         fontStyle: FontStyle.italic),
-                  )
-                : const Text(
+                  ),
+
+                )
+
+                    :
+                ElevatedButton(
+                  onPressed: () {
+                    selectedProductUserID = currentUserID.toString();
+                    Navigator.pushNamed(context, '/kitchenDetailScreen');
+
+                  },
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.redAccent[400],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 85.0, vertical: 15.0)),
+                  child:
+                  Text(
                     "Mutfağıma Git",
                     style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.white,
                         fontStyle: FontStyle.italic),
-                  )
-            //const Text("MUTFAK AÇ",style: TextStyle(fontSize: 18.0,color: Colors.white),)
+                  ),
 
-            )
+                );
+              }
+            }),
+
+
+SizedBox(
+  height: 20,
+),
+
+        StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(currentUserID)
+                .snapshots(),
+
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return new Text("Loading");
+              } else {
+                final data = snapshot.requireData;
+                return (data['hasKitchen'] == 0)
+                    ?
+                Row()
+
+                    :
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/productAddScreen');
+
+                  },
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.redAccent[400],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 85.0, vertical: 15.0)),
+
+                  child:
+                  Text(
+                    "Ürün Ekle",
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.white,
+                        fontStyle: FontStyle.italic),
+                  ),
+
+                );
+              }
+            }),
+
+
+        SizedBox(
+          height: 20,
+        ),
+
+
+
+
+
+
+          //const Text("MUTFAK AÇ",style: TextStyle(fontSize: 18.0,color: Colors.white),)
+
+
       ],
     );
   }

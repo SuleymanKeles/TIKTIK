@@ -1,9 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktik/data/modal/Kitchen.dart';
 
 import '../data/modal/User.dart';
+import '../main.dart';
 import '../widget/profile_widget.dart';
 import '../widget/textfield_widget.dart';
+
+
+String kitchenName ="";
+String kitchenAbout ="";
+String kitchenMeals ="";
 
 class KitchenAddScreen extends StatefulWidget {
   const KitchenAddScreen({Key? key}) : super(key: key);
@@ -12,7 +19,14 @@ class KitchenAddScreen extends StatefulWidget {
   _KitchenAddScreenState createState() => _KitchenAddScreenState();
 }
 
+
 class _KitchenAddScreenState extends State<KitchenAddScreen> {
+
+
+  final TextEditingController _kitchenNameController = TextEditingController();
+  final TextEditingController _kitchenAboutController = TextEditingController();
+
+
   Kitchen kitchen = Kitchen(
     KitchenID: "KitchenID",
     UserID: "UserID",
@@ -35,6 +49,22 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
           "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
       address: "address");
 
+  void _addKitchen() async {
+    final docUser =
+    FirebaseFirestore.instance.collection('users').doc(currentUserID);
+
+    var json = {
+      'kitchenName': '',
+      'kitchenAbout': '',
+      'kitchenMeals': '',
+      'hasKitchen': 1,
+    };
+
+    json['kitchenName'] = _kitchenNameController.text;
+    json['kitchenAbout'] = _kitchenAboutController.text;
+
+    await docUser.update(json);
+  }
   @override
   Widget build(BuildContext context) => Builder(
         builder: (context) => Scaffold(
@@ -58,27 +88,67 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
                   onClicked: () async {},
                 ),
                 const SizedBox(height: 20),
-                TextFieldWidget(
-                  label: 'MUTFAK ADI',
-                  text: "",
-                  onChanged: (name) {},
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Colors.grey, style: BorderStyle.solid),
+                      borderRadius: BorderRadius.circular(14)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: _kitchenNameController,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintText: "Mutfak adını giriniz...",
+                          label: Text("Mutfak Adı:"),
+                          hintStyle: TextStyle(color: Colors.grey)),
+                      validator: (name) {
+                        if (name!.isEmpty) {
+                          return "Lütfen mutfak adını giriniz";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
                 ),
+
+
                 const SizedBox(height: 20),
-                TextFieldWidget(
-                  label: 'HAKKINDA',
-                  text: "",
-                  onChanged: (email) {},
-                ),
-                const SizedBox(height: 20),
-                TextFieldWidget(
-                  label: 'YEMEKLER',
-                  text: "",
-                  maxLines: 3,
-                  onChanged: (about) {},
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Colors.grey, style: BorderStyle.solid),
+                      borderRadius: BorderRadius.circular(14)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: _kitchenAboutController,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintText: "Mutfak hakkında...",
+                          label: Text("Mutfak Hakkında"),
+                          hintStyle: TextStyle(color: Colors.grey)),
+                      validator: (name) {
+                        if (name!.isEmpty) {
+                          return "Lütfen mutfak hakkında giriniz";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
+                    _addKitchen();
                     Navigator.pushNamed(context, '/kitchenDetailScreen');
                   },
                   style: ElevatedButton.styleFrom(

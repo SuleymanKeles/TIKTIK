@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktik/Auth/signin_page.dart';
 import 'package:tiktik/StyleProvider.dart';
 
@@ -51,6 +52,8 @@ class _RegisterPageState extends State<RegisterPage> {
         currentUserName = _fullNameController.text;
         userCredential.user?.updateDisplayName(currentUserName);
 
+
+
         print("regFunct");
 
         print(currentUserMail);
@@ -96,9 +99,14 @@ class _RegisterPageState extends State<RegisterPage> {
         'description': '',
         'email': '',
         'image':
-            'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=',
+            'https://firebasestorage.googleapis.com/v0/b/tiktik-7f7e3.appspot.com/o/images%2Fdefault.jpg?alt=media&token=fde7c081-12d5-4781-ab9c-05226dced8a6',
         'name': '',
         'userID': '',
+        'kitchenName': '',
+        'kitchenAbout': '',
+        'kitchenMeals': '',
+        'hasKitchen': 0,
+
       };
 
       json['email'] = currentUserMail as String;
@@ -125,6 +133,17 @@ class _RegisterPageState extends State<RegisterPage> {
       json['email'] = currentUserMail as String;
       json['userID'] = currentUserID as String;
       json['name'] = currentUserName as String;
+
+
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+      prefs.setString('currentUserID', currentUserID.toString());
+
+      prefs.setString('currentUserName', currentUserName.toString());
+
+      prefs.setString('currentUserMail', currentUserMail.toString());
 
       await docUser.set(json);
     }
@@ -271,7 +290,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           _register();
                           //  createUser(name: 'name');
 
-                          Navigator.pop(context);
+                          Navigator.pushNamed(context, '/greetingPage');
                         }
                       },
                       text: "Kayıt ol",

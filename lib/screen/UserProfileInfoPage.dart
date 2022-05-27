@@ -132,12 +132,9 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
             TextButton(
               child: const Text('Tamam'),
               onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const GreetingPage(),
-                    ),
-                        (route) => false);
+                Navigator.pop(context);
+                Navigator.pop(context);
+
               },
             ),
           ],
