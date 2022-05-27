@@ -15,6 +15,7 @@ import 'package:tiktik/screen/SingUpScreen.dart';
 import 'package:tiktik/screen/UserProfileScreen.dart';
 import 'package:tiktik/screen/greetingPage.dart';
 import 'NavigationPage.dart';
+import 'control.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,10 +57,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => SignInPage(),
+        '/': (context) => Control(),
         '/registerPage': (context) => RegisterPage(),
         '/greetingPage': (context) => GreetingPage(),
-        '/navigationPage': (context) => NavigationPage(index: 0,),
+        '/navigationPage': (context) => NavigationPage(index: 1,),
         '/kitchenDetailScreen': (context) => KitchenDetailScreen(),
         '/kitchenAddScreen': (context) => KitchenAddScreen(),
         '/kitchenEditScreen': (context) => KitchenEditScreen(),
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
         '/messagingScreen': (context) => MessagingScreen(),
         '/orderConformationScreen': (context) => OrderConformationScreen(),
         '/singUpScreen': (context) => SingUpScreen(),
+        '/singInScreen': (context) => SignInPage(),
         // '/userProfileScreen': (context) => UserProfileScreen(menuScreenContext: context),
       },
       debugShowCheckedModeBanner: false,

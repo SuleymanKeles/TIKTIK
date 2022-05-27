@@ -35,7 +35,7 @@ class ProfileWidget extends StatelessWidget {
   Widget buildImage() {
     ///TODO kullanıcının resmi firestora yüklemesini sağlamak gerekiyor
    // final image = NetworkImage(imagePath);
-    final image =AssetImage(imagePath);
+    final image =NetworkImage(imagePath);
     return ClipOval(
       child: Material(
         color: Colors.transparent,

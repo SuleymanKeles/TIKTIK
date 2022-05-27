@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktik/NavigationPage.dart';
 import 'package:tiktik/Provider/UserData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,7 +84,10 @@ class __SignInBodyState extends State<_SignInBody> {
     return Center(
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, 'registerPage');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>  RegisterPage()),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.only(left: 50.0, top: 15),
@@ -145,9 +149,10 @@ class __SignInBodyState extends State<_SignInBody> {
       final _googleUser = userCredential.user;
       currentUserID = _googleUser?.uid;
       currentUserMail = _googleUser?.email;
-
-      ///todo display name
       currentUserName = _googleUser?.displayName;
+
+
+
 
       print(userCredential.user!.uid);
       // TODO: Kayıt İşlemi
@@ -340,6 +345,16 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
       currentUserName = user?.displayName;
       print(currentUserID! + " " + currentUserMail! + " " + currentUserName!);
 
+
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+      prefs.setString('currentUserID', currentUserID.toString());
+      prefs.setString('currentUserName', currentUserName.toString());
+      prefs.setString('currentUserMail', currentUserMail.toString());
+
+
       // TODO: Kayıt İşlemi
       // Scaffold.of(context).showSnackBar(SnackBar(
       //   duration: Duration(seconds: 2),
@@ -354,7 +369,7 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
       //   ),
       // );
 
-      Navigator.pushNamed(context, '/greetingPage');
+      Navigator.pushNamed(context, '/navigationPage');
 
       _emailController.text = "";
       _passwordController.text = "";

@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktik/data/modal/Kitchen.dart';
 
 import '../data/modal/Product.dart';
 import '../data/modal/User.dart';
 import '../data/modal/screenArguments.dart';
+import '../main.dart';
 import '../widget/profile_widget.dart';
 import '../widget/textfield_widget.dart';
+import 'HomeScreen.dart';
+import 'ProductDetailScreen.dart';
 
 class KitchenDetailScreen extends StatefulWidget {
   const KitchenDetailScreen({Key? key}) : super(key: key);
@@ -68,10 +72,22 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
   Widget build(BuildContext context) => Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(
-            title: const Text(
-              "Mutfak Detayı",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-            ),
+            title: StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(selectedProductUserID)
+                    .snapshots(),
+
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return new Text("Loading");
+                  } else {
+                    final data = snapshot.requireData;
+                    return (data['kitchenName'].isEmpty)
+                        ? Text("Ad yok")
+                        : Text(data['kitchenName']);
+                  }
+                }),
           ),
           body: Padding(
             padding:
@@ -94,53 +110,62 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                 ),
                 const SizedBox(height: 20),
                 Column(children: [
-                  const Text("Selma'nin mutfağı",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-                      textAlign: TextAlign.left), //mutfak ismi
+
+
+                  StreamBuilder<DocumentSnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(selectedProductUserID)
+                          .snapshots(),
+
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return new Text("Loading");
+                        } else {
+                          final data = snapshot.requireData;
+                          return (data['kitchenName'].isEmpty)
+                              ? Text("Ad yok",
+                              style:
+                              TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.left) //mutfak ismi
+                              : Text(data['kitchenName'],
+                              style:
+                              TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.left);//mutfak ismi;
+                        }
+                      }),
+
+
+
                   const SizedBox(height: 20),
-                  const Text("harika yemekler",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
-                      textAlign: TextAlign.left), //description
+
+
+                  StreamBuilder<DocumentSnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(selectedProductUserID)
+                          .snapshots(),
+
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return new Text("Loading");
+                        } else {
+                          final data = snapshot.requireData;
+                          return (data['kitchenAbout'].isEmpty)
+                              ? Text("açıklama yok",
+                              style:
+                              TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.left) //description
+                              : Text(data['kitchenAbout'],
+                              style:
+                              TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.left);//description
+                        }
+                      }),
+
+
                   const SizedBox(height: 20),
-                  Row(
-                    children: const [
-                      ImageIcon(
-                        AssetImage("assets/icons/star.png"),
-                        size: 18,
-                        color: Color(0xFFFF1744),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        "4.6",
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black),
-                      ),
-                      SizedBox(
-                        width: 30.0,
-                      ),
-                      ImageIcon(
-                        AssetImage("assets/icons/truck.png"),
-                        size: 18,
-                        color: Color(0xFFFF1744),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        "Gel Al",
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black),
-                      )
-                    ],
-                  ),
+
                 ]),
                 const SizedBox(height: 40),
                 Container(
@@ -179,193 +204,317 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                 hazirda_yada_hazirlat == 0
                     ?
                     //HAZIRDA
-                    ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: HazirdaList.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context, '/productDetailScreen',
-                                    // Screen Arguments class used with navigator.
-                                    arguments: ScreenArguments(
-                                      dataType: 'product',
-                                      data: '0005314',
-                                    ),
-                                  );
+                SizedBox(
+                  height: MediaQuery.of(context).size.height*0.44,
+                  child: ListView(
+                      scrollDirection: Axis.vertical,
+                      children: <Widget>[
+                        Container(
+                        ),
+                        StreamBuilder<QuerySnapshot>(
+                          stream:FirebaseFirestore.instance.collection('products')
+                              .where('userID', isEqualTo: selectedProductUserID)
+                              .where(
+                              'type', isEqualTo:
+                            "Hazırda"
+                          ).snapshots(),
+                          builder: (
+                              BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot,
+                              ) {
+                            if (snapshot.hasError) {
+                              return const Text("error");
+                            }
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Text("loading");
+                            }
+                            final data = snapshot.requireData;
+                            return ListView.builder(
+                              primary: false,
+                              itemCount: data.size,
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                    onTap: () {
 
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.asset(
-                                    HazirdaList[index]["image"],
-                                    //'assets/images/sarma.png',
-                                    width: MediaQuery.of(context).size.width * 1,
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(children: [
-                                Text(
-                                  HazirdaList[index]["name"],
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.black),
-                                )
-                              ]),
-                              const SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(
-                                children: [
-                                  const ImageIcon(
-                                    AssetImage("assets/icons/star.png"),
-                                    size: 18,
-                                    color: Color(0xFFFF1744),
-                                  ),
-                                  const SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Text(
-                                    HazirdaList[index]["score"],
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black),
-                                  ),
-                                  const SizedBox(
-                                    width: 20.0,
-                                  ),
-                                  const ImageIcon(
-                                    AssetImage("assets/icons/truck.png"),
-                                    size: 18,
-                                    color: Color(0xFFFF1744),
-                                  ),
-                                  const SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  const Text(
-                                    "Gel Al",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.black),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: MediaQuery.of(context).size.width * 0.1,
-                              ),
-                            ],
-                          );
-                        })
+
+                                      selectedProductName =
+                                      "${data.docs[index]['name']}";
+
+                                      selectedProductDescription =
+                                      "${data.docs[index]['description']}";
+
+                                      selectedProductUserID =
+                                      "${data.docs[index]['userID']}";
+
+                                      selectedProductImage =
+                                      "${data.docs[index]['image']}";
+
+                                      Navigator.pushNamed(context, '/productDetailScreen');
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context).size.width*0.5,
+                                          width: MediaQuery.of(context).size.width,
+
+                                          //padding: EdgeInsets.only(bottom: 24.0),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                                  children: [
+                                                    ClipRRect(
+                                                      borderRadius:
+                                                      BorderRadius.circular(8.0),
+                                                      child: Image.network(
+                                                        '${data.docs[index]['image']}',
+                                                        //'assets/images/sarma.png',
+                                                        height: MediaQuery.of(context).size.width*0.3,
+                                                        width: MediaQuery.of(context).size.width*0.87,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ]),
+                                              const SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              Row(children: [
+                                                Text(
+                                                  '${data.docs[index]['name']}',
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w300,
+                                                      color: Colors.black),
+                                                )
+                                              ]),
+                                              const SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  const ImageIcon(
+                                                    AssetImage(
+                                                        "assets/icons/star.png"),
+                                                    size: 18,
+                                                    color: Color(0xFFFF1744),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 5.0,
+                                                  ),
+
+                                                  StreamBuilder<DocumentSnapshot>(
+                                                      stream: FirebaseFirestore.instance
+                                                          .collection('users')
+                                                          .doc(data.docs[index]['userID'])
+                                                          .snapshots(),
+
+                                                      builder: (context, snapshot) {
+                                                        if (!snapshot.hasData) {
+                                                          return new Text("Loading");
+                                                        } else {
+                                                          final data = snapshot.requireData;
+                                                          return  Text(
+                                                            data['name'],
+                                                            style: const TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors.black),
+                                                          );
+                                                        }
+                                                      }),
+
+                                                  const SizedBox(
+                                                    width: 20.0,
+                                                  ),
+                                                  const ImageIcon(
+                                                    AssetImage(
+                                                        "assets/icons/truck.png"),
+                                                    size: 18,
+                                                    color: Color(0xFFFF1744),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 5.0,
+                                                  ),
+                                                  Text(
+                                                    '${data.docs[index]['service']}',
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w300,
+                                                        color: Colors.black),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                );
+                              },
+                            );
+                          },
+                        )]),)
 
                     //HAZIRLAT
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: HazirlatList.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).size.width * 0.1,
-                            ),
-                            child: Column(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.asset(
-                                    HazirdaList[index]["image"],
-                                    width:
-                                        MediaQuery.of(context).size.width * 1,
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10.0,
-                                ),
-                                Row(children: [
-                                  Text(
-                                    HazirdaList[index]["name"],
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.black),
-                                  )
-                                ]),
-                                const SizedBox(
-                                  height: 10.0,
-                                ),
-                                Row(
-                                  children: [
-                                    const ImageIcon(
-                                      AssetImage("assets/icons/star.png"),
-                                      size: 18,
-                                      color: Color(0xFFFF1744),
-                                    ),
-                                    const SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Text(
-                                      HazirdaList[index]["score"],
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black),
-                                    ),
-                                    const SizedBox(
-                                      width: 20.0,
-                                    ),
-                                    const ImageIcon(
-                                      AssetImage("assets/icons/truck.png"),
-                                      size: 18,
-                                      color: Color(0xFFFF1744),
-                                    ),
-                                    const SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    const Text(
-                                      "Gel Al",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w300,
-                                          color: Colors.black),
-                                    ),
-                                    const SizedBox(
-                                      width: 20.0,
-                                    ),
-                                    const ImageIcon(
-                                      AssetImage("assets/icons/chef.png"),
-                                      size: 18,
-                                      color: Color(0xFFFF1744),
-                                    ),
-                                    const SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Text(
-                                      HazirlatList[index]["cooked_by"],
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w300,
-                                          color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        })
+                    : SizedBox(
+                  height: MediaQuery.of(context).size.height*0.42,
+                  child: ListView(
+                      scrollDirection: Axis.vertical,
+                      children: <Widget>[
+                        Container(
+                        ),
+                        StreamBuilder<QuerySnapshot>(
+                          stream:FirebaseFirestore.instance.collection('products')
+                              .where('userID', isEqualTo: selectedProductUserID)
+                              .where(
+                              'type', isEqualTo:
+                            "Hazırlat"
+                          ).snapshots(),
+                          builder: (
+                              BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot,
+                              ) {
+                            if (snapshot.hasError) {
+                              return const Text("error");
+                            }
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Text("loading");
+                            }
+                            final data = snapshot.requireData;
+                            return ListView.builder(
+                              primary: false,
+                              itemCount: data.size,
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                    onTap: () {
+
+                                      selectedProductName =
+                                      "${data.docs[index]['name']}";
+
+                                      selectedProductDescription =
+                                      "${data.docs[index]['description']}";
+
+                                      selectedProductUserID =
+                                      "${data.docs[index]['userID']}";
+
+                                      selectedProductImage =
+                                      "${data.docs[index]['image']}";
+
+                                      Navigator.pushNamed(context, '/productDetailScreen');
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context).size.width*0.5,
+                                          width: MediaQuery.of(context).size.width,
+
+                                          //padding: EdgeInsets.only(bottom: 24.0),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                                  children: [
+                                                    ClipRRect(
+                                                      borderRadius:
+                                                      BorderRadius.circular(8.0),
+                                                      child: Image.network(
+                                                        '${data.docs[index]['image']}',
+                                                        //'assets/images/sarma.png',
+                                                        height: MediaQuery.of(context).size.width*0.3,
+                                                        width: MediaQuery.of(context).size.width*0.87,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ]),
+                                              const SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              Row(children: [
+                                                Text(
+                                                  '${data.docs[index]['name']}',
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w300,
+                                                      color: Colors.black),
+                                                )
+                                              ]),
+                                              const SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  const ImageIcon(
+                                                    AssetImage(
+                                                        "assets/icons/star.png"),
+                                                    size: 18,
+                                                    color: Color(0xFFFF1744),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 5.0,
+                                                  ),
+
+                                                  StreamBuilder<DocumentSnapshot>(
+                                                      stream: FirebaseFirestore.instance
+                                                          .collection('users')
+                                                          .doc(data.docs[index]['userID'])
+                                                          .snapshots(),
+
+                                                      builder: (context, snapshot) {
+                                                        if (!snapshot.hasData) {
+                                                          return new Text("Loading");
+                                                        } else {
+                                                          final data = snapshot.requireData;
+                                                          return  Text(
+                                                            data['name'],
+                                                            style: const TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors.black),
+                                                          );
+                                                        }
+                                                      }),
+
+                                                  const SizedBox(
+                                                    width: 20.0,
+                                                  ),
+                                                  const ImageIcon(
+                                                    AssetImage(
+                                                        "assets/icons/truck.png"),
+                                                    size: 18,
+                                                    color: Color(0xFFFF1744),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 5.0,
+                                                  ),
+                                                  Text(
+                                                    '${data.docs[index]['service']}',
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w300,
+                                                        color: Colors.black),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                );
+                              },
+                            );
+                          },
+                        )]),)
               ],
             ))),
           ),
