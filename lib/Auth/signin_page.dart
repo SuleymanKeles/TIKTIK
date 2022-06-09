@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
@@ -7,6 +8,7 @@ import 'package:tiktik/Provider/UserData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tiktik/control.dart';
 import 'package:tiktik/demo.dart';
 import 'package:tiktik/screen/UserProfileScreen.dart';
 import 'package:tiktik/screen/greetingPage.dart';
@@ -41,6 +43,44 @@ class _SignInBody extends StatefulWidget {
 }
 
 class __SignInBodyState extends State<_SignInBody> {
+
+
+  void createUser() async {
+
+    final docUser =
+    FirebaseFirestore.instance.collection('users').doc(currentUserID);
+
+    var json = {
+      'date': new DateTime.now(),
+      'description': '',
+      'email': '',
+      'image':
+      'https://firebasestorage.googleapis.com/v0/b/tiktik-7f7e3.appspot.com/o/images%2Fdefault.jpg?alt=media&token=fde7c081-12d5-4781-ab9c-05226dced8a6',
+      'name': '',
+      'userID': '',
+      'kitchenName': '',
+      'kitchenAbout': '',
+      'kitchenMeals': '',
+      'hasKitchen': 0,
+
+    };
+
+    json['email'] = currentUserMail as String;
+    json['userID'] = currentUserID as String;
+    json['name'] = currentUserName as String;
+
+
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+    prefs.setString('currentUserID', currentUserID.toString());
+    prefs.setString('currentUserName', currentUserName.toString());
+    prefs.setString('currentUserMail', currentUserMail.toString());
+
+
+    await docUser.set(json);
+  }
   Color? fontColor = Colors.redAccent[400];
 
   @override
@@ -151,7 +191,7 @@ class __SignInBodyState extends State<_SignInBody> {
       currentUserMail = _googleUser?.email;
       currentUserName = _googleUser?.displayName;
 
-
+      createUser();
 
 
       print(userCredential.user!.uid);
@@ -173,7 +213,7 @@ class __SignInBodyState extends State<_SignInBody> {
         MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider<ProviderUserData>(
               create: (_) => ProviderUserData.user(user: _googleUser),
-              child: GreetingPage()),
+              child: Control()),
         ),
       );
     } on FirebaseAuthException catch (e) {

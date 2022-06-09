@@ -1,5 +1,7 @@
 /// TODO FOR firestore add firestore new user information (akif)
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -113,6 +115,13 @@ class _RegisterPageState extends State<RegisterPage> {
       json['userID'] = currentUserID as String;
       json['name'] = currentUserName as String;
 
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      prefs.setString('currentUserID', currentUserID.toString());
+      prefs.setString('currentUserName', currentUserName.toString());
+      prefs.setString('currentUserMail', currentUserMail.toString());
+
       await docUser.set(json);
     }
 
@@ -138,11 +147,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
-
       prefs.setString('currentUserID', currentUserID.toString());
-
       prefs.setString('currentUserName', currentUserName.toString());
-
       prefs.setString('currentUserMail', currentUserMail.toString());
 
       await docUser.set(json);
@@ -290,6 +296,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           _register();
                           //  createUser(name: 'name');
 
+
+                          sleep(const Duration(seconds:3));
                           Navigator.pushNamed(context, '/greetingPage');
                         }
                       },

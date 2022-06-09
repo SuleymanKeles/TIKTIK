@@ -1,4 +1,21 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tiktik/Auth/signin_page.dart';
+import 'package:tiktik/StyleProvider.dart';
+import 'package:tiktik/screen/HomeScreen.dart';
+import 'package:tiktik/services/storage_service.dart';
+import '../main.dart';
+import '../profileWidget.dart';
+import 'ProductDetailScreen.dart';
+import 'UserProfileInfoPage.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktik/main.dart';
@@ -37,6 +54,11 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
   void initState() {
     super.initState();
     getUser();
+
+    displayNameController = new TextEditingController(text: currentUserName);
+    bioController = new TextEditingController(text: currentUserDescription);
+    mailController = new TextEditingController(text: currentUserMail);
+    addressController = new TextEditingController(text: currentUserAddress);
   }
 
   getUser() async {
@@ -53,6 +75,12 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
         currentUserName = data['name'];
         currentUserDescription = data['description'];
         currentUserAddress = data['address'];
+
+        print("####### $currentUserName");
+
+
+
+
       },
       onError: (e) => print("Error getting document: $e"),
     );
@@ -101,10 +129,10 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
       currentUserAddress = addressController.text;
     }
 
-    docUser.update({'name': currentUserName});
-    docUser.update({'description': currentUserDescription});
-    docUser.update({'email': currentUserMail});
-    docUser.update({'address': currentUserAddress});
+    docUser.update({'name': displayNameController.text});
+    docUser.update({'description': bioController.text});
+    docUser.update({'email': mailController.text});
+    docUser.update({'address': addressController.text});
 
     ///TODO image set
     //docUser.update({'image': displayNameController.text});
@@ -146,57 +174,65 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
 
   Column buildDisplayNameField() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-            child: Text(
-              "Kullanıcı Adın",
-              style: TextStyle(color: Colors.grey),
-            )),
-        Container(
-          decoration: carBoxDec,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(8, 6, 8, 6),
-            child: TextField(
-              controller: displayNameController,
-              decoration: InputDecoration(
+      children: [Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+                color: Colors.grey, style: BorderStyle.solid),
+            borderRadius: BorderRadius.circular(14)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+            controller: displayNameController,
+            decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: currentUserName,
-                hintStyle: infoHintStyle,
-              ),
-            ),
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                hintText: "Görünen ad giriniz...",
+                label: Text("Görünen ad"),
+                hintStyle: TextStyle(color: Colors.grey)),
+            validator: (name) {
+              if (name!.isEmpty) {
+                return "Lütfen kullanıcı adı giriniz";
+              }
+              return null;
+            },
           ),
-        )
-      ],
+        ),
+      ),],
     );
   }
 
   Column buildBioField() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-            child: Text(
-              "Kendinden Bahset",
-              style: TextStyle(color: Colors.grey),
-            )),
-        Container(
-          decoration: carBoxDec,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(8, 6, 8, 6),
-            child: TextField(
-              controller: bioController,
-              decoration: InputDecoration(
+      children: [Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+                color: Colors.grey, style: BorderStyle.solid),
+            borderRadius: BorderRadius.circular(14)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+            controller: bioController,
+            decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: currentUserDescription,
-                hintStyle: infoHintStyle,
-              ),
-            ),
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                hintText: "Hakkınızda kısa bilgi girin...",
+                label: Text("Hakkınızda"),
+                hintStyle: TextStyle(color: Colors.grey)),
+            validator: (name) {
+              if (name!.isEmpty) {
+                return "Lütfen Hakkınızda giriniz";
+              }
+              return null;
+            },
           ),
-        )
-      ],
+        ),
+      ),],
     );
   }
 
@@ -204,62 +240,71 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
 
   Column buildAddress() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-            child: Text(
-              "Adresin",
-              style: TextStyle(color: Colors.grey),
-            )),
-        Container(
-          decoration: carBoxDec,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(8, 6, 8, 6),
-            child: TextField(
-              controller: addressController,
-              decoration: InputDecoration(
+      children: [Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+                color: Colors.grey, style: BorderStyle.solid),
+            borderRadius: BorderRadius.circular(14)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+            controller: addressController,
+            decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: currentUserAddress,
-                hintStyle: infoHintStyle,
-              ),
-            ),
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                hintText: "Adresinizi girin...",
+                label: Text("Adres"),
+                hintStyle: TextStyle(color: Colors.grey)),
+            validator: (name) {
+              if (name!.isEmpty) {
+                return "Lütfen adres giriniz";
+              }
+              return null;
+            },
           ),
-        )
-      ],
+        ),
+      ),],
     );
   }
 
   Column buildMail() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-            padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-            child: Text(
-              "Mail Hesabın",
-              style: TextStyle(color: Colors.grey),
-            )),
-        Container(
-          decoration: carBoxDec,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(8, 6, 8, 6),
-            child: TextField(
-              controller: mailController,
-              decoration: InputDecoration(
+      children: [Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+                color: Colors.grey, style: BorderStyle.solid),
+            borderRadius: BorderRadius.circular(14)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+            controller: mailController,
+            decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: currentUserMail,
-                hintStyle: infoHintStyle,
-              ),
-            ),
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                hintText: "Mailinizi girin...",
+                label: Text("Mail Adresi"),
+                hintStyle: TextStyle(color: Colors.grey)),
+            validator: (name) {
+              if (name!.isEmpty) {
+                return "Lütfen mail giriniz";
+              }
+              return null;
+            },
           ),
-        )
-      ],
+        ),
+      ),],
     );
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -280,19 +325,78 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
                           top: 16.0,
                           bottom: 8.0,
                         ),
-                        child: CircleAvatar(
+                        child:
+                        StreamBuilder<DocumentSnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(currentUserID)
+                                .snapshots(),
+
+                            builder: (context, snapshot) {
+                              final Storage storage = Storage();
+
+                              if (!snapshot.hasData) {
+                                return new Text("Loading");
+                              } else {
+                                final data = snapshot.requireData;
+                                return GestureDetector(
+                                    child: CircleAvatar(
+                                      backgroundImage:
+                                      NetworkImage(data['image']),
+                                      radius: 50,
+                                    ),
+                                    onTap: () async {
+                                      final results = await FilePicker.platform.pickFiles(
+                                        allowMultiple: false,
+                                        type: FileType.custom,
+                                        allowedExtensions: ['png', 'jpg', 'jpeg'],
+                                      );
+
+                                      if (results == null) {
+                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('görsel seçilmedi')));
+                                      }
+
+                                      final path = results?.files.single.path;
+                                      final fileName = results?.files.single.name;
+
+                                      storage.uploadFile(path!, fileName!)
+                                          .then((value) => print('Done'));
+
+
+
+
+
+
+
+
+
+                                      print(path);
+                                      print(fileName);
+                                    }
+                                );
+                              }
+                            }),
+
+
+
+
+
+                        /*CircleAvatar(
                           backgroundImage:
                               AssetImage('assets/images/avatar.png'),
                           radius: 50,
-                        ),
+                        ),*/
                       ),
                       Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Column(
                           children: <Widget>[
                             buildDisplayNameField(),
+                            SizedBox(height: 20,),
                             buildBioField(),
+                            SizedBox(height: 20,),
                             buildMail(),
+                            SizedBox(height: 20,),
                             buildAddress(),
                           ],
                         ),
@@ -305,7 +409,8 @@ class _UserProfileInfoPage extends State<UserProfileInfoPage> {
                             print(currentUserMail);
                             print(currentUserDescription);
                             print(currentUserAddress);
-                            _showMyDialog();
+                            //_showMyDialog();
+                            Navigator.pushNamed(context, '/navigationPage2');
 
                           },
                           style: ElevatedButton.styleFrom(

@@ -1,11 +1,16 @@
+import 'package:tiktik/services/storage_service.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktik/data/modal/Kitchen.dart';
 
 import '../data/modal/User.dart';
 import '../main.dart';
+import '../services/storage_service.dart';
 import '../widget/profile_widget.dart';
 import '../widget/textfield_widget.dart';
+import 'HomeScreen.dart';
 
 
 String kitchenName ="";
@@ -58,12 +63,21 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
       'kitchenAbout': '',
       'kitchenMeals': '',
       'hasKitchen': 1,
+      'kitchenImage': '',
     };
 
     json['kitchenName'] = _kitchenNameController.text;
+    json['kitchenImage'] = currentImageURL;
     json['kitchenAbout'] = _kitchenAboutController.text;
 
+
+    currentImageURL = "";
     await docUser.update(json);
+
+    Navigator.pushNamed(
+      context,
+      '/navigationPage',
+    );
   }
   @override
   Widget build(BuildContext context) => Builder(
@@ -82,11 +96,65 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
                 child: SingleChildScrollView(
                     child: Column(
               children: [
-                ProfileWidget(
-                  imagePath: "assets/images/mutfak.png",
-                  isEdit: true,
-                  onClicked: () async {},
-                ),
+
+
+                StreamBuilder<DocumentSnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(currentUserID)
+                        .snapshots(),
+
+                    builder: (context, snapshot) {
+                      final Storage storage = Storage();
+
+                      if (!snapshot.hasData) {
+                        return new Text("Loading");
+                      } else {
+                        final data = snapshot.requireData;
+                        return GestureDetector(
+                            child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    child: Image.network(
+                                      (currentImageURL == "") ? "http://www.gergitavan.com/wp-content/uploads/2017/07/default-placeholder-1024x1024-570x321.png" : currentImageURL,
+                                      //'assets/images/sarma.png',
+                                      height: MediaQuery.of(context).size.width*0.3,
+                                      width: MediaQuery.of(context).size.width*0.87,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ]),
+                            onTap: () async {
+                              final results = await FilePicker.platform.pickFiles(
+                                allowMultiple: false,
+                                type: FileType.custom,
+                                allowedExtensions: ['png', 'jpg', 'jpeg'],
+                              );
+
+                              if (results == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('görsel seçilmedi')));
+                              }
+
+                              final path = results?.files.single.path;
+                              final fileName = results?.files.single.name;
+
+                              storage.uploadProductFile(path!, fileName!)
+                                  .then((value) => print('Done'));
+
+
+
+                              print(path);
+                              print(fileName);
+                            }
+                        );
+                      }
+                    }),
+
+
                 const SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
@@ -149,7 +217,8 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
                 ElevatedButton(
                   onPressed: () {
                     _addKitchen();
-                    Navigator.pushNamed(context, '/kitchenDetailScreen');
+                    selectedProductUserID = currentUserID!;
+                    Navigator.pushNamed(context, '/navigationPage');
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.redAccent[400],

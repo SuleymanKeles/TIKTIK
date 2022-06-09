@@ -209,10 +209,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 const SizedBox(height: 15),
                 Row(
+
                   children:  <Widget>[
                     SizedBox(width: 20),
-                    Text("$selectedProductDescription",
-                        style: TextStyle(fontSize: 15))
+                    Container(
+                      child: Text("$selectedProductDescription",
+                          style: TextStyle(fontSize: 15)),
+                      width: MediaQuery.of(context).size.width*0.8,
+                    )
                   ],
                 ),
                 const SizedBox(height: 30),

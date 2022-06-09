@@ -11,6 +11,11 @@ import '../widget/textfield_widget.dart';
 import 'HomeScreen.dart';
 import 'ProductDetailScreen.dart';
 
+
+String currentKitchenImage = "";
+String currentKitchenName = "";
+String currentKitchenAbout = "";
+
 class KitchenDetailScreen extends StatefulWidget {
   const KitchenDetailScreen({Key? key}) : super(key: key);
 
@@ -72,6 +77,16 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
   Widget build(BuildContext context) => Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/navigationPage2');
+
+              },
+              child: Icon(
+                Icons.close,  // add custom icons also
+              ),
+            ),
+
             title: StreamBuilder<DocumentSnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('users')
@@ -83,6 +98,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                     return new Text("Loading");
                   } else {
                     final data = snapshot.requireData;
+                    currentKitchenName = data['kitchenName'];
                     return (data['kitchenName'].isEmpty)
                         ? Text("Ad yok")
                         : Text(data['kitchenName']);
@@ -96,18 +112,34 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                 child: SingleChildScrollView(
                     child: Column(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Ink.image(
-                      image: AssetImage('assets/images/mutfak.png'),
-                      fit: BoxFit.fill,
-                      width: 350.0,
-                      height: 160.0,
-                    ),
-                  ),
-                ),
+
+                StreamBuilder<DocumentSnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(selectedProductUserID)
+                        .snapshots(),
+
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return new Text("Loading");
+                      } else {
+                        final data = snapshot.requireData;
+                        currentKitchenImage = data['kitchenImage'];
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(12.0),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: Ink.image(
+                              image: NetworkImage(data['kitchenImage']),
+                              fit: BoxFit.fill,
+                              width: 350.0,
+                              height: 160.0,
+                            ),
+                          ),
+                        );
+                      }
+                    }),
+
                 const SizedBox(height: 20),
                 Column(children: [
 
@@ -137,6 +169,8 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
 
 
 
+
+
                   const SizedBox(height: 20),
 
 
@@ -151,6 +185,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                           return new Text("Loading");
                         } else {
                           final data = snapshot.requireData;
+                          currentKitchenAbout = data['kitchenAbout'];
                           return (data['kitchenAbout'].isEmpty)
                               ? Text("açıklama yok",
                               style:
@@ -162,6 +197,35 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                               textAlign: TextAlign.left);//description
                         }
                       }),
+
+
+                  const SizedBox(height: 20),
+
+
+                  (selectedProductUserID == currentUserID) ?
+                  ElevatedButton(
+                    onPressed: () {
+                      selectedProductUserID = currentUserID.toString();
+
+                      Navigator.pushNamed(context, '/kitchenEditScreen');
+
+                    },
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.redAccent[400],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 85.0, vertical: 15.0)),
+                    child:
+                    Text(
+                      "Mutfağımı Düzenle",
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.white,
+                          fontStyle: FontStyle.italic),
+                    ),
+
+                  ) : Row(),
 
 
                   const SizedBox(height: 20),
@@ -217,7 +281,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                               .where(
                               'type', isEqualTo:
                             "Hazırda"
-                          ).snapshots(),
+                          ).where('active', isEqualTo: '1').snapshots(),
                           builder: (
                               BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot,
@@ -298,9 +362,8 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                                               ),
                                               Row(
                                                 children: [
-                                                  const ImageIcon(
-                                                    AssetImage(
-                                                        "assets/icons/star.png"),
+                                                  const Icon(
+                                                    Icons.person_outline,
                                                     size: 18,
                                                     color: Color(0xFFFF1744),
                                                   ),
@@ -320,7 +383,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                                                         } else {
                                                           final data = snapshot.requireData;
                                                           return  Text(
-                                                            data['name'],
+                                                            data['kitchenName'],
                                                             style: const TextStyle(
                                                                 fontSize: 12,
                                                                 color: Colors.black),
@@ -331,9 +394,8 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                                                   const SizedBox(
                                                     width: 20.0,
                                                   ),
-                                                  const ImageIcon(
-                                                    AssetImage(
-                                                        "assets/icons/truck.png"),
+                                                  Icon(
+                                                    (data.docs[index]['service'] == "Adrese Teslim") ? Icons.delivery_dining_outlined : Icons.directions_walk_outlined ,
                                                     size: 18,
                                                     color: Color(0xFFFF1744),
                                                   ),
@@ -374,7 +436,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                               .where(
                               'type', isEqualTo:
                             "Hazırlat"
-                          ).snapshots(),
+                          ).where('active', isEqualTo: '1').snapshots(),
                           builder: (
                               BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot,
@@ -454,12 +516,11 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                                               ),
                                               Row(
                                                 children: [
-                                                  const ImageIcon(
-                                                    AssetImage(
-                                                        "assets/icons/star.png"),
-                                                    size: 18,
-                                                    color: Color(0xFFFF1744),
-                                                  ),
+                                                const Icon(
+                                                Icons.person_outline,
+                                                size: 18,
+                                                color: Color(0xFFFF1744),
+                                              ),
                                                   const SizedBox(
                                                     width: 5.0,
                                                   ),
@@ -476,7 +537,7 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                                                         } else {
                                                           final data = snapshot.requireData;
                                                           return  Text(
-                                                            data['name'],
+                                                            data['kitchenName'],
                                                             style: const TextStyle(
                                                                 fontSize: 12,
                                                                 color: Colors.black),
@@ -487,9 +548,8 @@ class _KitchenDetailScreenState extends State<KitchenDetailScreen> {
                                                   const SizedBox(
                                                     width: 20.0,
                                                   ),
-                                                  const ImageIcon(
-                                                    AssetImage(
-                                                        "assets/icons/truck.png"),
+                                                  Icon(
+                                                    (data.docs[index]['service'] == "Adrese Teslim") ? Icons.delivery_dining_outlined : Icons.directions_walk_outlined ,
                                                     size: 18,
                                                     color: Color(0xFFFF1744),
                                                   ),

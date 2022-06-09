@@ -40,6 +40,15 @@ class _OrderConformationScreenState extends State<OrderConformationScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '/');
+
+            },
+            child: Icon(
+              Icons.close,  // add custom icons also
+            ),
+          ),
           title: const Text("Sipariş Tamamlandı"),
         ),
         body: Padding(
