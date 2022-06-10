@@ -1,7 +1,7 @@
 # TIKTIK
 
-Sena Altıntaş__
-Emine Çığ__
-Süleyman Keleş__
-Mehmet Akif Akkaya__
+Sena Altıntaş\
+Emine Çığ\
+Süleyman Keleş\
+Mehmet Akif Akkaya\
 Yüksel Burak Ağaişi
