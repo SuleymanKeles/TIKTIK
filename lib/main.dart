@@ -6,12 +6,14 @@ import 'package:tiktik/Auth/signin_page.dart';
 import 'package:tiktik/screen/KitchenAddScreen.dart';
 import 'package:tiktik/screen/KitchenDetailScreen.dart';
 import 'package:tiktik/screen/KitchenEditScreen.dart';
+import 'package:tiktik/screen/MessagingBoxScreen.dart';
 import 'package:tiktik/screen/MessagingScreen.dart';
 import 'package:tiktik/screen/OrderConformationScreen.dart';
 import 'package:tiktik/screen/ProductAddScreen.dart';
 import 'package:tiktik/screen/ProductDetailScreen.dart';
 import 'package:tiktik/screen/ProductEditScreen.dart';
 import 'package:tiktik/screen/SingUpScreen.dart';
+import 'package:tiktik/screen/UserProfileInfoPage.dart';
 import 'package:tiktik/screen/UserProfileScreen.dart';
 import 'package:tiktik/screen/greetingPage.dart';
 import 'NavigationPage.dart';
@@ -61,6 +63,7 @@ class MyApp extends StatelessWidget {
         '/registerPage': (context) => RegisterPage(),
         '/greetingPage': (context) => GreetingPage(),
         '/navigationPage': (context) => NavigationPage(index: 1,),
+        '/navigationPage2': (context) => NavigationPage(index: 2,),
         '/kitchenDetailScreen': (context) => KitchenDetailScreen(),
         '/kitchenAddScreen': (context) => KitchenAddScreen(),
         '/kitchenEditScreen': (context) => KitchenEditScreen(),
@@ -68,9 +71,11 @@ class MyApp extends StatelessWidget {
         '/productAddScreen': (context) => ProductAddScreen(),
         '/productEditScreen': (context) => ProductEditScreen(),
         '/messagingScreen': (context) => MessagingScreen(),
+        '/messagesScreen': (context) => NavigationPage(index: 0,),
         '/orderConformationScreen': (context) => OrderConformationScreen(),
         '/singUpScreen': (context) => SingUpScreen(),
         '/singInScreen': (context) => SignInPage(),
+        '/userProfileInfo': (context) => UserProfileInfoPage(),
         // '/userProfileScreen': (context) => UserProfileScreen(menuScreenContext: context),
       },
       debugShowCheckedModeBanner: false,

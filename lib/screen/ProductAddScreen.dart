@@ -1,4 +1,11 @@
+
+
+import 'package:file_picker/file_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tiktik/services/storage_service.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktik/data/modal/Kitchen.dart';
 import 'package:tiktik/data/modal/Product.dart';
@@ -41,17 +48,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
     Photo:
         "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
   );
-  User user = const User(
-      userID: "userID",
-      mailAddress: "mailAddress",
-      password: "password",
-      firstName: "firstName",
-      lastName: "lastName",
-      birthDate: "birthDate",
-      biography: "biography",
-      photo:
-          "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
-      address: "address");
 
   @override
   Widget build(BuildContext context) => Builder(
@@ -70,11 +66,66 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 child: SingleChildScrollView(
                     child: Column(
               children: [
-                ProfileWidget(
-                  imagePath: "assets/images/mercimekköftesi.png",
-                  isEdit: true,
-                  onClicked: () async {},
-                ),
+
+
+                StreamBuilder<DocumentSnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(currentUserID)
+                        .snapshots(),
+
+                    builder: (context, snapshot) {
+                      final Storage storage = Storage();
+
+                      if (!snapshot.hasData) {
+                        return new Text("Loading");
+                      } else {
+                        final data = snapshot.requireData;
+                        return GestureDetector(
+                            child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    child: Image.network(
+                                      (currentImageURL == "") ? "http://www.gergitavan.com/wp-content/uploads/2017/07/default-placeholder-1024x1024-570x321.png" : currentImageURL,
+                                      //'assets/images/sarma.png',
+                                      height: MediaQuery.of(context).size.width*0.3,
+                                      width: MediaQuery.of(context).size.width*0.87,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ]),
+                            onTap: () async {
+                              final results = await FilePicker.platform.pickFiles(
+                                allowMultiple: false,
+                                type: FileType.custom,
+                                allowedExtensions: ['png', 'jpg', 'jpeg'],
+                              );
+
+                              if (results == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('görsel seçilmedi')));
+                              }
+
+                              final path = results?.files.single.path;
+                              final fileName = results?.files.single.name;
+
+                              storage.uploadProductFile(path!, fileName!)
+                                  .then((value) => print('Done'));
+
+
+
+                              print(path);
+                              print(fileName);
+                            }
+                        );
+                      }
+                    }),
+
+
+
                 const SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
@@ -242,30 +293,44 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
                 ElevatedButton(
                   onPressed: () async {
+
+                    String productID = '$currentUserID-${DateTime.now()}';
                     final docProduct =
-                    FirebaseFirestore.instance.collection('products').doc("$currentUserID-${DateTime.now()}");
+                    FirebaseFirestore.instance.collection('products').doc("$productID");
 
                     var json = {
                       'date': new DateTime.now(),
                       'description': '',
                       'image':
-                      'https://firebasestorage.googleapis.com/v0/b/tiktik-7f7e3.appspot.com/o/images%2Fdefault.jpg?alt=media&token=fde7c081-12d5-4781-ab9c-05226dced8a6',
+
+                      '',
+                      'active': '1',
                       'name': '',
                       'userID': '',
                       'score': 0,
                       'price': -1,
                       'service': '',
-                      'type': ''
+                      'type': '',
+                    'ID': ''
                     };
 
                     json['userID'] = currentUserID.toString();
+                    json['ID'] = productID;
                     json['price'] = int.parse(_productPriceController.text);
                     json['name'] = _productNameController.text;
                     json['description'] = _productDescriptionController.text;
                     json['service'] = dropdownValue2;
                     json['type'] = dropdownValue;
+                    json['image'] = currentImageURL;
+
+                    currentImageURL = "";
 
                     await docProduct.set(json);
+
+                    Navigator.pushNamed(
+                      context,
+                      '/navigationPage',
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.redAccent[400],

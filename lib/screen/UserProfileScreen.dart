@@ -1,11 +1,14 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktik/Auth/signin_page.dart';
 import 'package:tiktik/StyleProvider.dart';
 import 'package:tiktik/screen/HomeScreen.dart';
+import 'package:tiktik/services/storage_service.dart';
 import '../main.dart';
 import '../profileWidget.dart';
 import 'ProductDetailScreen.dart';
@@ -69,6 +72,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -93,6 +98,29 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Widget buildHeader(BuildContext context) {
+    final Storage storage = Storage();
+
+    void uppload () async {
+      final docUser =
+      FirebaseFirestore.instance.collection('users').doc(currentUserID);
+
+      var json = {
+        'date': new DateTime.now(),
+        'description': '',
+        'email': '',
+        'image':
+        'https://firebasestorage.googleapis.com/v0/b/tiktik-7f7e3.appspot.com/o/images%2Fdefault.jpg?alt=media&token=fde7c081-12d5-4781-ab9c-05226dced8a6',
+
+
+      };
+
+      json['email'] = currentUserMail as String;
+      json['userID'] = currentUserID as String;
+      json['name'] = currentUserName as String;
+
+      await docUser.set(json);
+    }
+
     return Container(
       color: Colors.white,
       padding: EdgeInsets.only(left: 20.0, top: 20, bottom: 20),
@@ -107,7 +135,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               // ),
 
 
-
               StreamBuilder<DocumentSnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('users')
@@ -119,14 +146,38 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       return new Text("Loading");
                     } else {
                       final data = snapshot.requireData;
-                      return ProfileWidget(
-                        imagePath: data['image'],
-                        onClicked: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => UserProfileInfoPage()),
-                          );
-                        },
+                      return GestureDetector(
+                        child: CircleAvatar(
+                          backgroundImage:
+                          NetworkImage(data['image']),
+                          radius: 50,
+                        ),
+                        onTap: () async {
+                            final results = await FilePicker.platform.pickFiles(
+                              allowMultiple: false,
+                              type: FileType.custom,
+                              allowedExtensions: ['png', 'jpg', 'jpeg'],
+                            );
+
+                            if (results == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('görsel seçilmedi')));
+                            }
+
+                            final path = results?.files.single.path;
+                            final fileName = results?.files.single.name;
+
+                            storage.uploadFile(path!, fileName!)
+                            .then((value) => print('Done'));
+
+
+
+
+
+
+
+                            print(path);
+                            print(fileName);
+                      }
                       );
                     }
                   }),
@@ -197,7 +248,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         backgroundColor: Colors.white,
                         radius: 20.0,
                       ),
-                      title: const Text('Kullanıcı Adı '),
+                      title: const Text('Görünen İsim'),
                       subtitle: (currentUserName!.isEmpty)
                           ? Text("not found!")
                           : Text("$currentUserName"),
@@ -213,7 +264,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         backgroundColor: Colors.white,
                         radius: 20.0,
                       ),
-                      title: const Text('Mail'),
+                      title: const Text('Mail Adresi'),
                       subtitle: (currentUserMail!.isEmpty)
                           ? Text("not found!")
                           : Text("$currentUserMail"),
@@ -229,7 +280,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         backgroundColor: Colors.white,
                         radius: 20.0,
                       ),
-                      title: const Text('Adresin'),
+                      title: const Text('Ev Adresi'),
                       subtitle: (currentUserAddress.isEmpty)
                           ? Text("Adres bilginiz yok\nEklemek için tıklayın")
                           : Text("$currentUserAddress"),
@@ -291,19 +342,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       onTap: () async {
 
 
+
+
                         SharedPreferences prefs = await SharedPreferences.getInstance();
 
 
                         prefs.setString('currentUserID', "");
-
                         prefs.setString('currentUserName', "");
-
                         prefs.setString('currentUserMail', "");
 
                         final user = _auth.currentUser;
+
                         if (user == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("No sign-in yet")));
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => SignInPage()),
+                          );
 
                           return;
                         }
@@ -429,6 +484,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ElevatedButton(
                   onPressed: () {
                     selectedProductUserID = currentUserID.toString();
+
+
                     Navigator.pushNamed(context, '/kitchenDetailScreen');
 
                   },
@@ -448,8 +505,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
 
                 );
+
+
               }
             }),
+
+
 
 
 SizedBox(
@@ -474,6 +535,7 @@ SizedBox(
                     :
                 ElevatedButton(
                   onPressed: () {
+                    currentImageURL = "";
                     Navigator.pushNamed(context, '/productAddScreen');
 
                   },

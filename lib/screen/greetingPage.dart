@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tiktik/NavigationPage.dart';
 import 'package:tiktik/main.dart';
+import 'package:tiktik/screen/KitchenAddScreen.dart';
 import 'package:tiktik/screen/UserProfileScreen.dart';
 
 import '../Auth/signin_page.dart';
@@ -62,7 +63,7 @@ class GreetingPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => NavigationPage(index: 2),
+                          builder: (context) => KitchenAddScreen(),
                         ),
                       );
                     },

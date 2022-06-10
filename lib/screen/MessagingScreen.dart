@@ -50,6 +50,15 @@ class _MessagingScreenState extends State<MessagingScreen> {
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/messagesScreen');
+
+                },
+                child: Icon(
+                  Icons.arrow_back,  // add custom icons also
+                ),
+              ),
               foregroundColor: Colors.black,
               backgroundColor: Colors.white,
               centerTitle: true,
@@ -283,44 +292,47 @@ class _MessagingScreenState extends State<MessagingScreen> {
                       )),
                       IconButton(
                         onPressed: () async {
-
-                          debugPrint(myController.text);
                           currentText = myController.text;
 
+                          if(currentText != "") {
 
-                          var currentTime = DateTime.now().toString();
-
-                          final docMessage =
-                          FirebaseFirestore.instance.collection('messages').doc("$buyerUserID-$sellerUserID");
-                          final docMessages =
-                          FirebaseFirestore.instance.collection('messages').doc("$buyerUserID-$sellerUserID").collection('messages').doc("$currentTime");
+                            debugPrint(myController.text);
 
 
-                          var json = {
-                            'date': DateTime.now(),
-                            'seller': '',
-                            'buyer' : '',
-                            'lastMessage' : '',
+                            var currentTime = DateTime.now().toString();
 
-                          'active' : 1
-                          };
+                            final docMessage =
+                            FirebaseFirestore.instance.collection('messages').doc("$buyerUserID-$sellerUserID");
+                            final docMessages =
+                            FirebaseFirestore.instance.collection('messages').doc("$buyerUserID-$sellerUserID").collection('messages').doc("$currentTime");
 
-                          var json2 = {
-                            'message': '',
-                            'author': '',
-                          'active' : 1
 
-                          };
+                            var json = {
+                              'date': DateTime.now(),
+                              'seller': '',
+                              'buyer' : '',
+                              'lastMessage' : '',
 
-                          json['buyer'] = buyerUserID.toString();
-                          json['lastMessage'] = currentText;
-                          json['seller'] = sellerUserID.toString();
-                          json2['message'] = currentText;
-                          json2['author'] = currentUserID!;
+                              'active' : 1
+                            };
 
-                          await docMessage.update(json);
-                          await docMessages.set(json2);
-                          myController.text = "";
+                            var json2 = {
+                              'message': '',
+                              'author': '',
+                              'active' : 1
+
+                            };
+
+                            json['buyer'] = buyerUserID.toString();
+                            json['lastMessage'] = currentText;
+                            json['seller'] = sellerUserID.toString();
+                            json2['message'] = currentText;
+                            json2['author'] = currentUserID!;
+
+                            await docMessage.update(json);
+                            await docMessages.set(json2);
+                            myController.text = "";
+                          }
 
 
                         },

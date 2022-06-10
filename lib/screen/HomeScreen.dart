@@ -18,6 +18,7 @@ String selectedProductImage = "";
 String selectedProductDescription = "";
 String selectedProductPrice = "";
 String selectedProductService = "";
+String selectedProductType = "";
 
 
 
@@ -252,11 +253,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               Container(
                               ),
                               StreamBuilder<QuerySnapshot>(
-                                stream:FirebaseFirestore.instance.collection('products')
+                                stream:FirebaseFirestore.instance.collection('products').orderBy('date', descending: true)
                                     .where(
                                     'type', isEqualTo:
                                   "Hazırda"
-                                ).snapshots(),
+                                ).where('active', isEqualTo: '1').snapshots(),
                                 builder: (
                                     BuildContext context,
                                     AsyncSnapshot<QuerySnapshot> snapshot,
@@ -290,8 +291,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                             selectedProductImage =
                                             "${data.docs[index]['image']}";
 
+                                            selectedProductID =
+                                            "${data.docs[index]['ID']}";
+
                                             selectedProductPrice =
                                             "${data.docs[index]['price']}";
+
+                                            selectedProductType =
+                                            "${data.docs[index]['type']}";
+
+                                            selectedProductService =
+                                            "${data.docs[index]['service']}";
 
 
                                             buyerUserID = currentUserID! ;
@@ -436,11 +446,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             Container(
                             ),
                             StreamBuilder<QuerySnapshot>(
-                              stream:FirebaseFirestore.instance.collection('products')
+                              stream:FirebaseFirestore.instance.collection('products').orderBy('date', descending: true)
                                   .where(
                                   'type', isEqualTo:
                                 "Hazırlat"
-                              ).snapshots(),
+                              ).where('active', isEqualTo: '1').snapshots(),
                               builder: (
                                   BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot,
@@ -461,7 +471,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     return GestureDetector(
                                         onTap: () {
 
+                                          selectedProductType =
+                                          "${data.docs[index]['type']}";
 
+                                          selectedProductService =
+                                          "${data.docs[index]['service']}";
 
                                           selectedProductName =
                                           "${data.docs[index]['name']}";
@@ -474,6 +488,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                           selectedProductImage =
                                           "${data.docs[index]['image']}";
+
+                                          selectedProductID =
+                                          "${data.docs[index]['ID']}";
+
 
 
                                           selectedProductPrice =
