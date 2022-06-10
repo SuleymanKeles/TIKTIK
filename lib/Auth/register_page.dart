@@ -105,6 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'name': '',
         'userID': '',
         'kitchenName': '',
+        'kitchenImage': '',
         'kitchenAbout': '',
         'kitchenMeals': '',
         'hasKitchen': 0,

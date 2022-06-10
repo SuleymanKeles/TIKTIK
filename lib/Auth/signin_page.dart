@@ -59,6 +59,7 @@ class __SignInBodyState extends State<_SignInBody> {
       'name': '',
       'userID': '',
       'kitchenName': '',
+      'kitchenImage': '',
       'kitchenAbout': '',
       'kitchenMeals': '',
       'hasKitchen': 0,

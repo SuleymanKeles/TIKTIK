@@ -317,7 +317,6 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                         FirebaseFirestore.instance.collection('products').doc("$selectedProductID");
                         var json = {
                           'description': '',
-                          'image': '',
                           'name': '',
                           'price': -1,
                           'service': '',
@@ -329,7 +328,6 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
                         json['description'] = _productDescriptionController.text;
                         json['service'] = dropdownValue2;
                         json['type'] = dropdownValue;
-                        json['image'] = (currentImageURL == "") ? selectedProductImage : currentImageURL;
 
                         currentImageURL = "";
 

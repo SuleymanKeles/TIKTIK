@@ -1,3 +1,4 @@
+import 'package:tiktik/screen/KitchenDetailScreen.dart';
 import 'package:tiktik/services/storage_service.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -54,7 +55,7 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
           "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
       address: "address");
 
-  void _addKitchen() async {
+  void _addKitchen() {
     final docUser =
     FirebaseFirestore.instance.collection('users').doc(currentUserID);
 
@@ -63,16 +64,13 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
       'kitchenAbout': '',
       'kitchenMeals': '',
       'hasKitchen': 1,
-      'kitchenImage': '',
     };
 
     json['kitchenName'] = _kitchenNameController.text;
-    json['kitchenImage'] = currentImageURL;
     json['kitchenAbout'] = _kitchenAboutController.text;
 
 
-    currentImageURL = "";
-    await docUser.update(json);
+    docUser.update(json);
 
     Navigator.pushNamed(
       context,
@@ -120,7 +118,7 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
                                     borderRadius:
                                     BorderRadius.circular(8.0),
                                     child: Image.network(
-                                      (currentImageURL == "") ? "http://www.gergitavan.com/wp-content/uploads/2017/07/default-placeholder-1024x1024-570x321.png" : currentImageURL,
+                                      (currentKitchenImage == "") ? "http://www.gergitavan.com/wp-content/uploads/2017/07/default-placeholder-1024x1024-570x321.png" : currentKitchenImage,
                                       //'assets/images/sarma.png',
                                       height: MediaQuery.of(context).size.width*0.3,
                                       width: MediaQuery.of(context).size.width*0.87,
@@ -142,7 +140,7 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
                               final path = results?.files.single.path;
                               final fileName = results?.files.single.name;
 
-                              storage.uploadProductFile(path!, fileName!)
+                              storage.uploadKitchenFile(path!, fileName!)
                                   .then((value) => print('Done'));
 
 
@@ -217,6 +215,8 @@ class _KitchenAddScreenState extends State<KitchenAddScreen> {
                 ElevatedButton(
                   onPressed: () {
                     _addKitchen();
+                    currentKitchenImage = "";
+
                     selectedProductUserID = currentUserID!;
                     Navigator.pushNamed(context, '/navigationPage');
                   },

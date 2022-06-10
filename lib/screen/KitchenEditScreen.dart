@@ -63,7 +63,7 @@ class _KitchenEditScreenState extends State<KitchenEditScreen> {
       "https://yt3.ggpht.com/ytc/AKedOLRt1d4p7bPylasq_66BIC8-k3hkyVjJ2JICQITK=s900-c-k-c0x00ffffff-no-rj",
       address: "address");
 
-  void _addKitchen() async {
+  void _addKitchen() {
     final docUser =
     FirebaseFirestore.instance.collection('users').doc(currentUserID);
 
@@ -72,16 +72,13 @@ class _KitchenEditScreenState extends State<KitchenEditScreen> {
       'kitchenAbout': '',
       'kitchenMeals': '',
       'hasKitchen': 1,
-      'kitchenImage': '',
     };
 
     json['kitchenName'] = _kitchenNameController.text;
-    json['kitchenImage'] = currentImageURL;
     json['kitchenAbout'] = _kitchenAboutController.text;
 
 
-    currentImageURL = "";
-    await docUser.update(json);
+    docUser.update(json);
 
     Navigator.pushNamed(
       context,
@@ -226,6 +223,7 @@ class _KitchenEditScreenState extends State<KitchenEditScreen> {
                       onPressed: () {
                         _addKitchen();
                         selectedProductUserID = currentUserID!;
+                        currentKitchenImage = "";
                         Navigator.pushNamed(context, '/kitchenDetailScreen');
                       },
                       style: ElevatedButton.styleFrom(

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tiktik/screen/HomeScreen.dart';
 import 'package:tiktik/screen/KitchenDetailScreen.dart';
 
 import '../main.dart';
@@ -80,8 +81,17 @@ class Storage {
 
 
 
-    currentImageURL = url;
+    final docProduct=
+    FirebaseFirestore.instance.collection('products').doc(selectedProductID);
 
+    var json = {
+      'image': '',
+
+    };
+
+    json['image'] = url as String;
+    currentImageURL = url as String;
+    await docProduct.update(json);
 
 
     print(url);
@@ -112,13 +122,21 @@ class Storage {
 
 
 
+    final docUser =
+    FirebaseFirestore.instance.collection('users').doc(currentUserID);
 
-    currentKitchenImage = url;
+    var json = {
+      'kitchenImage': '',
+
+    };
+
+    json['kitchenImage'] = url as String;
+    currentKitchenImage = url as String;
+    await docUser.update(json);
 
 
 
     print(url);
-
 
   }
 
